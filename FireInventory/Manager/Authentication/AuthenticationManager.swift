@@ -57,6 +57,7 @@ final class AuthenticationManager {
         try Auth.auth().signOut()
     }
     
+    //Get current userID
     func getCurrentUserId() -> String? {
         return Auth.auth().currentUser?.uid
     }
