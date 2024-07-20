@@ -4,7 +4,7 @@ This is nventory management application built with SwiftUI and Firebase. Users c
 
 ## Features
 - User Authentication with Firebase
-- Site and Item Management
+- Site and Item Management with Firestore
 - Stock Management with Push and Pull Operations
 - Transaction Logging for Auditing
 - Responsive UI with SwiftUI
