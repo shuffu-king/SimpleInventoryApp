@@ -24,7 +24,6 @@
 		3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B682C4B765F00804BC9 /* Transaction.swift */; };
 		3C213B6B2C4C472B00804BC9 /* SitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */; };
 		3C213B6F2C4C556700804BC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */; };
-		3C213B712C4C55D100804BC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C213B702C4C55D100804BC9 /* GoogleService-Info.plist */; };
 		3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */; };
 		3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC772C3EE073007BEDAA /* Assets.xcassets */; };
 		3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC7A2C3EE073007BEDAA /* Preview Assets.xcassets */; };
@@ -54,7 +53,6 @@
 		3C213B682C4B765F00804BC9 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitesViewModel.swift; sourceTree = "<group>"; };
 		3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		3C213B702C4C55D100804BC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3CB2EC702C3EE06E007BEDAA /* FireInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireInventoryApp.swift; sourceTree = "<group>"; };
 		3CB2EC772C3EE073007BEDAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 			isa = PBXGroup;
 			children = (
 				3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */,
-				3C213B702C4C55D100804BC9 /* GoogleService-Info.plist */,
 				3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */,
 				3C213B672C4B763100804BC9 /* Transactions */,
 				3C213B572C43281C00804BC9 /* Sites */,
@@ -318,7 +315,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C213B6F2C4C556700804BC9 /* GoogleService-Info.plist in Resources */,
-				3C213B712C4C55D100804BC9 /* GoogleService-Info.plist in Resources */,
 				3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */,
 				3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */,
 			);
