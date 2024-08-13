@@ -14,26 +14,15 @@ final class SitesManager {
     static let shared = SitesManager()
     private init() { }
     
+    
+    private let db = Firestore.firestore()
     private let sitesCollection = Firestore.firestore().collection("sites")
     private let transactionsCollection = Firestore.firestore().collection("transactions")
+    private let currentUser = AuthenticationManager.shared.getCurrentUserId() ?? "unknown"
     
     private func siteDocument(siteId: String) -> DocumentReference {
         sitesCollection.document(siteId)
     }
-    
-//    func getAllSites() async throws -> [Site] {
-//        let snapshot = try await sitesCollection.getDocuments()
-//        
-//        var sites: [Site] = []
-//        for document in snapshot.documents {
-//            let site = try document.data(as: Site.self)
-//            sites.append(site)
-//            
-//            
-//        }
-//        return sites
-//        
-//    }
     
     func getAllSites(for userId: String) async throws -> [Site] {
         let snapshot = try await sitesCollection.whereField("userIDs", arrayContains: userId).getDocuments()
@@ -45,12 +34,35 @@ final class SitesManager {
         try await siteRef.updateData([
             "items.\(itemId)" : FieldValue.increment(Int64(quantity))
         ])
-    }
-    
-    func addTransaction(siteID: String, itemID: String, quantity: Int, userID: String, type: String, notes: String) async throws {
-        let transaction = Transaction(siteID: siteID, itemID: itemID, quantity: quantity, userID: userID, timestamp: Timestamp(), notes: notes, type: type)
         
-        let _ = try transactionsCollection.addDocument(from: transaction)
     }
     
+    func updateSiteRobots(siteID: String, robotID: String, add: Bool) async throws {
+        let siteRef = sitesCollection.document(siteID)
+        try await db.runTransaction { transaction, errorPointer -> Any? in
+            do {
+                let siteDocument = try transaction.getDocument(siteRef)
+                guard var site = try siteDocument.data(as: Site?.self) else {
+                    return nil
+                }
+                
+                if add {
+                    site.robotIDs.append(robotID)
+                } else {
+                    site.robotIDs.removeAll { $0 == robotID }
+                }
+                
+                try transaction.setData(from: site, forDocument: siteRef)
+                return nil
+            } catch {
+                errorPointer?.pointee = error as NSError
+                return nil
+            }
+        }
+    }
+    
+    func addTransaction(_ transaction: Transaction) async throws {
+        // Logic to add a transaction
+        try transactionsCollection.addDocument(from: transaction)
+    }
 }

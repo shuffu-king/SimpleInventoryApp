@@ -17,9 +17,10 @@ final class StockUpdateViewModel: ObservableObject {
     func updateItemQuantity(site: Site, viewModel: SitesViewModel) {
         guard !selectedItemID.isEmpty else { return }
         
-        let change = isPush ? quantity : -quantity
-        viewModel.updateItemQuantity(siteId: site.id, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: notes)
+        let itemName = viewModel.getItemName(by: selectedItemID)
         
+        let change = isPush ? quantity : -quantity
+        viewModel.updateItemQuantity(siteId: site.id, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: "for item \(itemName)", userId: AuthenticationManager.shared.getCurrentUserId() ?? "unknown")
     }
 }
 
@@ -40,14 +41,13 @@ struct StockUpdateView: View {
                 }
                 
                 Stepper("Quantity: \(viewModel.quantity)", value: $viewModel.quantity, in: 1...50)
-                
-                TextField("Notes", text: $viewModel.notes)
-                
+                                
                 Button("Apply"){
-                    if viewModel.notes.isEmpty { return }
+                    viewModel.notes = "item name: \(siteViewModel.getItemName(by: viewModel.selectedItemID))"
                     viewModel.updateItemQuantity(site: site, viewModel: siteViewModel)
                     viewModel.selectedItemID = ""
                     viewModel.quantity = 1
+                    viewModel.notes = ""
                     isPresented = false
                 }
             }
@@ -73,5 +73,5 @@ struct StockUpdateView: View {
 }
 
 #Preview {
-    StockUpdateView(viewModel: StockUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"]), isPresented: .constant(true))
+    StockUpdateView(viewModel: StockUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(true))
 }

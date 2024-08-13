@@ -13,9 +13,6 @@ struct SiteStockView: View {
     
     let site: Site
     @ObservedObject var viewModel: SitesViewModel
-    @ObservedObject private var stockUpdateViewModel = StockUpdateViewModel()
-    @State private var showPopup = false
-    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
@@ -24,53 +21,51 @@ struct SiteStockView: View {
             Text("Location: \(site.location)")
                 .font(.subheadline)
                 .opacity(0.7)
-            Text("Items:")
-                .font(.headline)
             
-            List {
-                ForEach(site.items.keys.sorted(), id: \.self) { itemID in
-                    HStack {
-                        Text(viewModel.getItemName(by: itemID))
-                        Spacer()
-                        Text("Quantity: \(site.items[itemID] ?? 0)")
-                    }
-                }
+            NavigationLink {
+                RobotsView(site: site)
+            } label: {
+                Text("Robots")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red)
+                    .cornerRadius(10)
             }
             
-            Spacer()
-            
-            HStack {
-                Button {
-                    stockUpdateViewModel.isPush = true
-                    showPopup.toggle()
-                } label: {
-                    Image(systemName: "square.and.arrow.down")
-                }
-                
-                Spacer()
-                 
-                Button {
-                    stockUpdateViewModel.isPush = false
-                    showPopup.toggle()
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                }
-                 
+            NavigationLink {
+                CartsView(site: site)
+            } label: {
+                Text("Carts")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green)
+                    .cornerRadius(10)
             }
             
-            
+            NavigationLink {
+                ItemsView(site: site, viewModel: viewModel)
+            } label: {
+                Text("Items")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
             
         }
         .padding()
         .navigationTitle("\(site.name)")
-        .sheet(isPresented: $showPopup) {
-            StockUpdateView(viewModel: stockUpdateViewModel, siteViewModel: viewModel, site: site, isPresented: $showPopup)
-        }
     }
 }
 
 #Preview {
     NavigationStack {
-        SiteStockView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"]), viewModel: SitesViewModel())
+        SiteStockView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["test_ids"]), viewModel: SitesViewModel())
     }
 }

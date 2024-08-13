@@ -12,10 +12,16 @@ final class SitesViewModel: ObservableObject {
     
     @Published private(set) var sites: [Site] = []
     @Published private(set) var items: [Item] = []
+    @Published private(set) var robots: [Robot] = []
     
     func getAllSites() async throws {
-        guard let userId = AuthenticationManager.shared.getCurrentUserId() else { return }
+        guard let userId = AuthenticationManager.shared.getCurrentUserId() else {
+            print("UserID not found")
+            return
+        }
         self.sites = try await SitesManager.shared.getAllSites(for: userId)
+        print("Fetched sites: \(self.sites)")
+        
     }
     
     func getAllItems() async throws {
@@ -26,7 +32,7 @@ final class SitesViewModel: ObservableObject {
         return items.first { $0.id == id }?.itemName ?? "Unknown Item"
     }
     
-    func updateItemQuantity(siteId: String, itemId: String, change: Int, type: String, notes: String){
+    func updateItemQuantity(siteId: String, itemId: String, change: Int, type: String, notes: String, userId: String){
         guard let userID = AuthenticationManager.shared.getCurrentUserId() else { return }
         guard let siteIndex = sites.firstIndex(where: {$0.id == siteId}) else { return }
         
@@ -40,8 +46,21 @@ final class SitesViewModel: ObservableObject {
         
         Task {
             try await SitesManager.shared.updateSiteItemQuantity(siteId: siteId, itemId: itemId, quantity: change)
-            try await SitesManager.shared.addTransaction(siteID: siteId, itemID: itemId, quantity: change, userID: userID, type: type, notes: notes)
+            let transactionRecord = Transaction(entityType: "item", entityId: itemId, siteId: siteId, action: type, userId: userID, notes: notes)
+            try await SitesManager.shared.addTransaction(transactionRecord)
         }
     }
     
+//    func getAllRobots(for siteId: String) async throws {
+//
+//        self.robots = try await SitesManager.shared.getAllRobots(for: siteId)
+//    }
+//
+//    func addRobot(to siteId: String, robot: Robot) async throws {
+//        try await SitesManager.shared.addRobot(to: siteId, robot: robot)
+//    }
+//
+//    func removeRobot(from siteId: String, robot: Robot) async throws {
+//        try await SitesManager.shared.removeRobot(from: siteId, robot: robot)
+//    }
 }

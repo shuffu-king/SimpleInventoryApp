@@ -13,6 +13,8 @@ struct AddRobotView: View {
     @State private var newRobotSN: String = ""
     @State private var errorMessage: String? = nil
     @State private var newRobotPosition: PartPosition = .TL
+    @State private var newRobotVersion: RobotVersion = .G22
+    @State private var newRobotHealth: RobotHealth = .new
     let site: Site
     @ObservedObject var viewModel: RobotsViewModel
     @Binding var showAddRobotView: Bool
@@ -35,7 +37,9 @@ struct AddRobotView: View {
                 }
                               
                 Button {
-                    showScanner = true
+                    if !showScanner {
+                        showScanner = true
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "qrcode.viewfinder")
@@ -51,12 +55,31 @@ struct AddRobotView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .padding(.vertical, 5)
+                
+                Picker("Robot Version", selection: $newRobotVersion) {
+                    ForEach(RobotVersion.allCases, id: \.self) { version in
+                        Text(version.rawValue).tag(version)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .padding(.vertical, 5)
+                
+                Picker("Robot Health", selection: $newRobotHealth) {
+                    ForEach(RobotHealth.allCases, id: \.self) { health in
+                        Text(health.rawValue).tag(health)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .padding(.vertical, 5)
+                
                 Button("Add Robot") {
                     Task {
-                        let newRobot = Robot(serialNumber: newRobotSN, position: newRobotPosition)
-                        await viewModel.addRobot(to: site.id, robot: newRobot)
+                        let newRobot = Robot(serialNumber: newRobotSN, position: newRobotPosition, version: newRobotVersion, health: newRobotHealth, siteID: site.id)
+                        try await viewModel.addRobot(to: site.id, robot: newRobot)
                         newRobotSN = ""
                         newRobotPosition = .TL
+                        newRobotVersion = .G22
+                        newRobotHealth = .new
                     }
                     showAddRobotView = false
                 }
@@ -83,5 +106,5 @@ struct AddRobotView: View {
 }
 
 #Preview {
-    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robots: [Robot(serialNumber: "test_SN", position: .TL), Robot(serialNumber: "test_SN2", position: .BL)]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
+    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["gagflksjflo"]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
 }

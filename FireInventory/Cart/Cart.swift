@@ -8,9 +8,11 @@
 import Foundation
 
 struct Cart: Identifiable, Codable {
-    let id: String
-    let name: String
-    let password: String?
-    var robots: [Robot]
+    var id: String { name }
+    var name: String
+    var TLserialNumber: String?
+    var TRserialNumber: String?
+    var BLserialNumber: String?
+    var BRserialNumber: String?
 }
 

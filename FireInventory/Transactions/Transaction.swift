@@ -10,12 +10,25 @@ import FirebaseFirestore
 
 struct Transaction: Identifiable, Codable {
     @DocumentID var id: String?
-    let siteID: String
-    let itemID: String
-    let quantity: Int
-    let userID: String
+    let entityType: String
+    let entityId: String
+    let siteId: String
+    let quantity: Int?
+    let userId: String
     let timestamp: Timestamp
-    let notes: String
-    let type: String
+    let action: String
+    let notes: String?
+    let newSiteId: String?
     
+    init(entityType: String, entityId: String, siteId: String, action: String, userId: String, quantity: Int? = nil, notes: String? = nil, newSiteId: String? = nil) {
+        self.entityType = entityType
+        self.entityId = entityId
+        self.siteId = siteId
+        self.action = action
+        self.timestamp = Timestamp()
+        self.userId = userId
+        self.quantity = quantity
+        self.notes = notes
+        self.newSiteId = newSiteId
+    }
 }

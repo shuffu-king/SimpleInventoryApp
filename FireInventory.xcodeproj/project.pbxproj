@@ -24,6 +24,26 @@
 		3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B682C4B765F00804BC9 /* Transaction.swift */; };
 		3C213B6B2C4C472B00804BC9 /* SitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */; };
 		3C213B6F2C4C556700804BC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */; };
+		3C7D3B072C6ABEB600083B7F /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */; };
+		3C7D3B0B2C6AC06400083B7F /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B092C6AC06400083B7F /* Robot.swift */; };
+		3C7D3B0E2C6AC0DC00083B7F /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B0C2C6AC0DC00083B7F /* Cart.swift */; };
+		3C7D3B112C6AC16F00083B7F /* RobotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B0F2C6AC16F00083B7F /* RobotManager.swift */; };
+		3C7D3B122C6AC16F00083B7F /* CartsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B102C6AC16F00083B7F /* CartsManager.swift */; };
+		3C7D3B172C6AC2DC00083B7F /* AddRobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B132C6AC2DC00083B7F /* AddRobotView.swift */; };
+		3C7D3B182C6AC2DC00083B7F /* RobotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B142C6AC2DC00083B7F /* RobotsView.swift */; };
+		3C7D3B192C6AC2DC00083B7F /* RobotsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B152C6AC2DC00083B7F /* RobotsViewModel.swift */; };
+		3C7D3B1D2C6AC2FB00083B7F /* CartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B1A2C6AC2FB00083B7F /* CartsView.swift */; };
+		3C7D3B1E2C6AC2FB00083B7F /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */; };
+		3C7D3B212C6AC39300083B7F /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B1F2C6AC39300083B7F /* PrimaryButtonStyle.swift */; };
+		3C7D3B232C6AC4DF00083B7F /* RobotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B222C6AC4DF00083B7F /* RobotDetailView.swift */; };
+		3C7D3B252C6AC4EB00083B7F /* CartRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */; };
+		3C7D3B272C6AC52100083B7F /* CartDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B262C6AC52100083B7F /* CartDetailView.swift */; };
+		3C7D3B292C6AC64E00083B7F /* EditRobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */; };
+		3C7D3B2C2C6AC7C000083B7F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 3C7D3B2B2C6AC7C000083B7F /* CodeScanner */; };
+		3C7D3B2E2C6AC8F000083B7F /* SwapRobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B2D2C6AC8F000083B7F /* SwapRobotView.swift */; };
+		3C7D3B302C6ACD2400083B7F /* AddCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B2F2C6ACD2400083B7F /* AddCartView.swift */; };
+		3C7D3B322C6ACE9F00083B7F /* SelectRobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B312C6ACE9F00083B7F /* SelectRobotView.swift */; };
+		3C7D3B352C6B840F00083B7F /* ItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B342C6B840F00083B7F /* ItemsView.swift */; };
 		3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */; };
 		3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC772C3EE073007BEDAA /* Assets.xcassets */; };
 		3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC7A2C3EE073007BEDAA /* Preview Assets.xcassets */; };
@@ -53,6 +73,25 @@
 		3C213B682C4B765F00804BC9 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitesViewModel.swift; sourceTree = "<group>"; };
 		3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
+		3C7D3B092C6AC06400083B7F /* Robot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
+		3C7D3B0C2C6AC0DC00083B7F /* Cart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
+		3C7D3B0F2C6AC16F00083B7F /* RobotManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotManager.swift; sourceTree = "<group>"; };
+		3C7D3B102C6AC16F00083B7F /* CartsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartsManager.swift; sourceTree = "<group>"; };
+		3C7D3B132C6AC2DC00083B7F /* AddRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRobotView.swift; sourceTree = "<group>"; };
+		3C7D3B142C6AC2DC00083B7F /* RobotsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotsView.swift; sourceTree = "<group>"; };
+		3C7D3B152C6AC2DC00083B7F /* RobotsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotsViewModel.swift; sourceTree = "<group>"; };
+		3C7D3B1A2C6AC2FB00083B7F /* CartsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartsView.swift; sourceTree = "<group>"; };
+		3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
+		3C7D3B1F2C6AC39300083B7F /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		3C7D3B222C6AC4DF00083B7F /* RobotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotDetailView.swift; sourceTree = "<group>"; };
+		3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartRowView.swift; sourceTree = "<group>"; };
+		3C7D3B262C6AC52100083B7F /* CartDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartDetailView.swift; sourceTree = "<group>"; };
+		3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRobotView.swift; sourceTree = "<group>"; };
+		3C7D3B2D2C6AC8F000083B7F /* SwapRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapRobotView.swift; sourceTree = "<group>"; };
+		3C7D3B2F2C6ACD2400083B7F /* AddCartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCartView.swift; sourceTree = "<group>"; };
+		3C7D3B312C6ACE9F00083B7F /* SelectRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectRobotView.swift; sourceTree = "<group>"; };
+		3C7D3B342C6B840F00083B7F /* ItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsView.swift; sourceTree = "<group>"; };
 		3CB2EC702C3EE06E007BEDAA /* FireInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireInventoryApp.swift; sourceTree = "<group>"; };
 		3CB2EC772C3EE073007BEDAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +110,7 @@
 			files = (
 				3C213B3B2C40C8E700804BC9 /* FirebaseFirestoreSwift in Frameworks */,
 				3CB2EC872C3EF578007BEDAA /* FirebaseAnalyticsSwift in Frameworks */,
+				3C7D3B2C2C6AC7C000083B7F /* CodeScanner in Frameworks */,
 				3C213B392C40C8DF00804BC9 /* FirebaseFirestore in Frameworks */,
 				3CB2EC892C3EF578007BEDAA /* FirebaseAuth in Frameworks */,
 				3CB2EC852C3EF578007BEDAA /* FirebaseAnalytics in Frameworks */,
@@ -142,6 +182,8 @@
 				3C213B4A2C40D26700804BC9 /* UserManager.swift */,
 				3C213B532C42B2F900804BC9 /* ItemsManager.swift */,
 				3C213B582C43307400804BC9 /* SitesManager.swift */,
+				3C7D3B102C6AC16F00083B7F /* CartsManager.swift */,
+				3C7D3B0F2C6AC16F00083B7F /* RobotManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -173,7 +215,10 @@
 		3C213B5A2C43315400804BC9 /* Sites */ = {
 			isa = PBXGroup;
 			children = (
+				3C7D3B332C6B840000083B7F /* Items */,
+				3C7D3B1C2C6AC2FB00083B7F /* Carts */,
 				3C213B612C4612E400804BC9 /* StockUpdate */,
+				3C7D3B162C6AC2DC00083B7F /* Robots */,
 				3C213B5D2C43317300804BC9 /* SitesView.swift */,
 				3C213B5F2C434CA000804BC9 /* SiteStockView.swift */,
 				3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */,
@@ -205,6 +250,72 @@
 			path = Transactions;
 			sourceTree = "<group>";
 		};
+		3C7D3B062C6ABEB600083B7F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		3C7D3B0A2C6AC06400083B7F /* Robot */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B092C6AC06400083B7F /* Robot.swift */,
+			);
+			path = Robot;
+			sourceTree = "<group>";
+		};
+		3C7D3B0D2C6AC0DC00083B7F /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B0C2C6AC0DC00083B7F /* Cart.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
+		3C7D3B162C6AC2DC00083B7F /* Robots */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B222C6AC4DF00083B7F /* RobotDetailView.swift */,
+				3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */,
+				3C7D3B132C6AC2DC00083B7F /* AddRobotView.swift */,
+				3C7D3B142C6AC2DC00083B7F /* RobotsView.swift */,
+				3C7D3B152C6AC2DC00083B7F /* RobotsViewModel.swift */,
+			);
+			path = Robots;
+			sourceTree = "<group>";
+		};
+		3C7D3B1C2C6AC2FB00083B7F /* Carts */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B2F2C6ACD2400083B7F /* AddCartView.swift */,
+				3C7D3B2D2C6AC8F000083B7F /* SwapRobotView.swift */,
+				3C7D3B312C6ACE9F00083B7F /* SelectRobotView.swift */,
+				3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */,
+				3C7D3B262C6AC52100083B7F /* CartDetailView.swift */,
+				3C7D3B1A2C6AC2FB00083B7F /* CartsView.swift */,
+				3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */,
+			);
+			path = Carts;
+			sourceTree = "<group>";
+		};
+		3C7D3B202C6AC39300083B7F /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B1F2C6AC39300083B7F /* PrimaryButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		3C7D3B332C6B840000083B7F /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				3C7D3B342C6B840F00083B7F /* ItemsView.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
 		3CB2EC672C3EE06E007BEDAA = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +336,10 @@
 		3CB2EC722C3EE06E007BEDAA /* FireInventory */ = {
 			isa = PBXGroup;
 			children = (
+				3C7D3B202C6AC39300083B7F /* Button */,
+				3C7D3B0D2C6AC0DC00083B7F /* Cart */,
+				3C7D3B0A2C6AC06400083B7F /* Robot */,
+				3C7D3B062C6ABEB600083B7F /* Utils */,
 				3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */,
 				3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */,
 				3C213B672C4B763100804BC9 /* Transactions */,
@@ -268,6 +383,7 @@
 				3CB2EC882C3EF578007BEDAA /* FirebaseAuth */,
 				3C213B382C40C8DF00804BC9 /* FirebaseFirestore */,
 				3C213B3A2C40C8E700804BC9 /* FirebaseFirestoreSwift */,
+				3C7D3B2B2C6AC7C000083B7F /* CodeScanner */,
 			);
 			productName = FireInventory;
 			productReference = 3CB2EC702C3EE06E007BEDAA /* FireInventory.app */;
@@ -299,6 +415,7 @@
 			mainGroup = 3CB2EC672C3EE06E007BEDAA;
 			packageReferences = (
 				3CB2EC832C3EF578007BEDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				3C7D3B2A2C6AC7C000083B7F /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 3CB2EC712C3EE06E007BEDAA /* Products */;
 			projectDirPath = "";
@@ -329,22 +446,41 @@
 			files = (
 				3C213B592C43307400804BC9 /* SitesManager.swift in Sources */,
 				3C213B6B2C4C472B00804BC9 /* SitesViewModel.swift in Sources */,
+				3C7D3B252C6AC4EB00083B7F /* CartRowView.swift in Sources */,
 				3CB2EC952C3F89C6007BEDAA /* SettingsView.swift in Sources */,
 				3C213B472C40CC0200804BC9 /* ProfileView.swift in Sources */,
+				3C7D3B232C6AC4DF00083B7F /* RobotDetailView.swift in Sources */,
+				3C7D3B072C6ABEB600083B7F /* QRScannerView.swift in Sources */,
 				3C213B602C434CA000804BC9 /* SiteStockView.swift in Sources */,
+				3C7D3B1E2C6AC2FB00083B7F /* CartViewModel.swift in Sources */,
+				3C7D3B322C6ACE9F00083B7F /* SelectRobotView.swift in Sources */,
+				3C7D3B182C6AC2DC00083B7F /* RobotsView.swift in Sources */,
 				3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */,
+				3C7D3B172C6AC2DC00083B7F /* AddRobotView.swift in Sources */,
 				3C213B4F2C41B06C00804BC9 /* Items.swift in Sources */,
 				3CB2EC912C3F877B007BEDAA /* RootView.swift in Sources */,
+				3C7D3B1D2C6AC2FB00083B7F /* CartsView.swift in Sources */,
+				3C7D3B292C6AC64E00083B7F /* EditRobotView.swift in Sources */,
+				3C7D3B212C6AC39300083B7F /* PrimaryButtonStyle.swift in Sources */,
 				3C213B562C43281300804BC9 /* Sites.swift in Sources */,
+				3C7D3B352C6B840F00083B7F /* ItemsView.swift in Sources */,
 				3CB2EC8B2C3F0813007BEDAA /* AuthenticationView.swift in Sources */,
 				3CB2EC8F2C3F0D96007BEDAA /* AuthenticationManager.swift in Sources */,
+				3C7D3B0E2C6AC0DC00083B7F /* Cart.swift in Sources */,
+				3C7D3B0B2C6AC06400083B7F /* Robot.swift in Sources */,
+				3C7D3B302C6ACD2400083B7F /* AddCartView.swift in Sources */,
+				3C7D3B112C6AC16F00083B7F /* RobotManager.swift in Sources */,
+				3C7D3B122C6AC16F00083B7F /* CartsManager.swift in Sources */,
 				3C213B442C40CBC600804BC9 /* EmailSignInViewModel.swift in Sources */,
 				3CB2EC8D2C3F0955007BEDAA /* EmailSignInView.swift in Sources */,
 				3C213B4B2C40D26700804BC9 /* UserManager.swift in Sources */,
 				3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */,
 				3C213B542C42B2F900804BC9 /* ItemsManager.swift in Sources */,
 				3C213B402C40CB0600804BC9 /* SettingsViewModel.swift in Sources */,
+				3C7D3B2E2C6AC8F000083B7F /* SwapRobotView.swift in Sources */,
+				3C7D3B272C6AC52100083B7F /* CartDetailView.swift in Sources */,
 				3C213B5E2C43317300804BC9 /* SitesView.swift in Sources */,
+				3C7D3B192C6AC2DC00083B7F /* RobotsViewModel.swift in Sources */,
 				3C213B662C489D6B00804BC9 /* TabBarView.swift in Sources */,
 				3C213B632C46130C00804BC9 /* StockUpdateView.swift in Sources */,
 			);
@@ -552,6 +688,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3C7D3B2A2C6AC7C000083B7F /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
 		3CB2EC832C3EF578007BEDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -572,6 +716,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3CB2EC832C3EF578007BEDAA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		3C7D3B2B2C6AC7C000083B7F /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C7D3B2A2C6AC7C000083B7F /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 		3CB2EC842C3EF578007BEDAA /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

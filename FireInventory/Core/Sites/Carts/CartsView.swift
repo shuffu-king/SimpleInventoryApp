@@ -11,64 +11,55 @@ struct CartsView: View {
     
     let site: Site
     @StateObject private var viewModel = CartViewModel()
+    @State private var showingAddCartView = false
     
     var body: some View {
-        VStack {
-            List(viewModel.carts){ cart in
-                VStack(alignment: .leading){
-                    HStack {
-                        Text(cart.name)
-                        Spacer ()
-                        Button {
-                            viewModel.toggleCartExpansion(cartId: cart.id)
-                        } label: {
-                            Image(systemName: viewModel.expandedCartID == cart.id ? "chevron.up" : "chevron.down")
+        NavigationStack {
+            List {
+                ForEach(viewModel.carts) { cart in
+//                    CartRowView(cart: cart, viewModel: viewModel, siteId: site.id)
+                    NavigationLink {
+                        CartDetailView(cart: cart, viewModel: viewModel, siteId: site.id)
+                    } label: {
+                        VStack {
+                            Text(cart.name)
+                                .font(.headline)
                         }
-                        .buttonStyle(BorderedButtonStyle())
                     }
-                    if viewModel.expandedCartID == cart.id {
-                        VStack(alignment: .leading) {
-                            if let password = cart.password {
-                                Text(password)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            } else  {
-                                Text("No password")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                            }
-                            Text("Robots: \(cart.robots.count)")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
+
+                }
+                .onDelete { IndexSet in
+                    Task {
+                        if let index = IndexSet.first {
+                            let cart = viewModel.carts[index]
+                            try await viewModel.deleteCart(for: site.id, cartId: cart.id)
                         }
                     }
                     
                 }
             }
-            .listStyle(PlainListStyle())
-            .scrollIndicators(.visible)
             .navigationTitle("Carts")
-            .task {
-                do {
-                    try await viewModel.getAllCarts(for: site.id)
-                } catch {
-                    print("Failed to fetch carts: \(error.localizedDescription)")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddCartView.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .sheet(isPresented: $showingAddCartView){
+                        AddCartView(viewModel: viewModel, siteId: site.id)
+                    }
                 }
             }
-            
-            Form {
-                Section("Add new cart"){
-                    TextField("Cart Name", text: $viewModel.newCartName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    TextField("Password (Optional)", text: $viewModel.newCartPassword)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
+            .task {
+                try? await viewModel.getAllCarts(for: site.id)
+                try? await viewModel.getAllRobots(for: site.id)
             }
         }
-        
     }
 }
 
-//#Preview {
-//    CartsView(site: Site(id: "test", name: "test name", location: "test location", items: ["item1": 1], userIDs: ["user1"], robots: [], carts: [Cart(id: "cart1", name: "Cart 1", password: "1234", robots: [])]))
-//}
+#Preview {
+    CartsView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["test_ids"]))
+}
+
