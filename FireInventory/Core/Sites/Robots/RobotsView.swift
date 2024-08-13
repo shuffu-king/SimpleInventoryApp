@@ -32,8 +32,6 @@ struct RobotsView: View {
                 .padding()
             }
             
-            
-            
             Picker("Select Position", selection: $viewModel.selectedPosition){
                 Text("All").tag(PartPosition?.none)
                 ForEach(PartPosition.allCases, id: \.self){ position in
@@ -64,7 +62,6 @@ struct RobotsView: View {
                 .pickerStyle(MenuPickerStyle())
                 .padding()
             }
-            
             
             List{
                 ForEach(viewModel.filteredRobots) { robot in

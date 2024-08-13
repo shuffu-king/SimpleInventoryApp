@@ -50,16 +50,6 @@ struct AddCartView: View {
                         }
                     }
                     
-                    //                    Picker("BL", selection: $selectedBackLeft) {
-                    //                        Text("Select Robot").tag(Robot?.none)
-                    //                        ForEach(viewModel.getAvailableRobots(for: .BL), id: \.id) { robot in
-                    //                            Text(robot.serialNumber).tag(robot as Robot?)
-                    //                                .foregroundColor(robot.health == .new ? .green : robot.health == .refurbished ? .orange : .primary)
-                    //
-                    //                        }
-                    //                    }
-                    //                    .pickerStyle(DefaultPickerStyle())
-                    
                     Button("Select BL") {
                         selectedPosition = .BL
                         isSelectRobotPresented = true
@@ -71,16 +61,6 @@ struct AddCartView: View {
                                 .opacity(0.4)
                         }
                     }
-                    
-                    //                    Picker("BR", selection: $selectedBackRight) {
-                    //                        Text("Select Robot").tag(Robot?.none)
-                    //                        ForEach(viewModel.getAvailableRobots(for: .BR), id: \.id) { robot in
-                    //                            Text(robot.serialNumber).tag(robot as Robot?)
-                    //                                .foregroundColor(robot.health == .new ? .green : robot.health == .refurbished ? .orange : .primary)
-                    //
-                    //                        }
-                    //                    }
-                    //                    .pickerStyle(DefaultPickerStyle())
                     
                     Button("Select BR") {
                         selectedPosition = .BR

@@ -34,17 +34,29 @@ final class RobotsViewModel: ObservableObject {
     
     func updateRobot(from siteId: String, robot: Robot) async throws{
         try await RobotManager.shared.updateRobot(robot, siteId: siteId)
+        
     }
     
+    func siteRobotSwap(from currentSiteId: String, to newSiteId: String, robotID: String) async throws {
+        print("Swapping robot \(robotID) from \(currentSiteId) to \(newSiteId)")
+        try await SitesManager.shared.siteRobotSwap(robotID: robotID, from: currentSiteId, to: newSiteId)
+        
+//        // Reload data for both sites
+//        try await getAllRobots(for: currentSiteId)
+//        try await getAllRobots(for: newSiteId)
+//        
+    }
     
     var filteredRobots: [Robot] {
         robots.filter { robot in
-                    let matchesPosition = selectedPosition == nil || robot.position == selectedPosition
-                    let matchesHealth = selectedHealth == nil || robot.health == selectedHealth
-                    let matchesVersion = selectedVersion == nil || robot.version == selectedVersion
-                    let matchesSearchText = searchQuery.isEmpty || robot.serialNumber.lowercased().contains(searchQuery.lowercased())
-                    
-                    return matchesPosition && matchesHealth && matchesVersion && matchesSearchText
-                }
+            let matchesPosition = selectedPosition == nil || robot.position == selectedPosition
+            let matchesHealth = selectedHealth == nil || robot.health == selectedHealth
+            let matchesVersion = selectedVersion == nil || robot.version == selectedVersion
+            let matchesSearchText = searchQuery.isEmpty || robot.serialNumber.lowercased().contains(searchQuery.lowercased())
+            
+            return matchesPosition && matchesHealth && matchesVersion && matchesSearchText
+        }
     }
+    
+    
 }

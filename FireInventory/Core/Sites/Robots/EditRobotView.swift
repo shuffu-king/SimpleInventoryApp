@@ -14,7 +14,6 @@ struct EditRobotView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var healthSelection: RobotHealth = .new
-    @State private var isSiteSwapRobotViewPresented = false
     @State private var showAlert = false
     @State private var robotNotes = ""
     
@@ -46,11 +45,6 @@ struct EditRobotView: View {
                     TextEditor(text: $robotNotes)
                         .frame(height: 100)
                 }
-                
-                Button("Change Site"){
-                    isSiteSwapRobotViewPresented = true
-                }
-                .foregroundStyle(.orange)
             }
             .navigationTitle("Edit Robot")
             .toolbar {
@@ -67,9 +61,6 @@ struct EditRobotView: View {
                         }
                     }
                 }
-            }
-            .sheet(isPresented: $isSiteSwapRobotViewPresented) {
-                
             }
             .alert("One or more fields missing", isPresented: $showAlert) {
                 Button("OK", role: .cancel){ }

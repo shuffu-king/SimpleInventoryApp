@@ -12,8 +12,9 @@ struct RobotDetailView: View {
     let siteId: String
     @ObservedObject var viewModel: RobotsViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+    @State private var isSiteSwapRobotViewPresented = false
     @State private var isEditable = false
+    
     
     var body: some View {
         NavigationStack {
@@ -37,6 +38,11 @@ struct RobotDetailView: View {
                 Section("Notes") {
                     Text(robot.notes ?? "N/A")
                 }
+                
+                Button("Change Site"){
+                    isSiteSwapRobotViewPresented = true
+                }
+                .foregroundStyle(.orange)
             }
             .navigationTitle("Robot")
             .toolbar {
@@ -46,6 +52,9 @@ struct RobotDetailView: View {
             }
             .sheet(isPresented: $isEditable){
                 EditRobotView(robot: robot, siteId: siteId, viewModel: viewModel)
+            }
+            .sheet(isPresented: $isSiteSwapRobotViewPresented) {
+                SiteRobotSwap(robotID: robot.id, currentSiteId: siteId, viewModel: viewModel)
             }
         }
     }

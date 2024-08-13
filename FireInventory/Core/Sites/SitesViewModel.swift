@@ -51,16 +51,4 @@ final class SitesViewModel: ObservableObject {
         }
     }
     
-//    func getAllRobots(for siteId: String) async throws {
-//
-//        self.robots = try await SitesManager.shared.getAllRobots(for: siteId)
-//    }
-//
-//    func addRobot(to siteId: String, robot: Robot) async throws {
-//        try await SitesManager.shared.addRobot(to: siteId, robot: robot)
-//    }
-//
-//    func removeRobot(from siteId: String, robot: Robot) async throws {
-//        try await SitesManager.shared.removeRobot(from: siteId, robot: robot)
-//    }
 }

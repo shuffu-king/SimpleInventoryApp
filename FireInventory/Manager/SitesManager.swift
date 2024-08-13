@@ -65,4 +65,41 @@ final class SitesManager {
         // Logic to add a transaction
         try transactionsCollection.addDocument(from: transaction)
     }
+    
+    
+    //get all available sites excluding current
+    func getAvailableSites(for userId: String, excluding siteId: String) async throws -> [Site] {
+        let sites = try await getAllSites(for: userId)
+        return sites.filter { $0.id != siteId }
+    }
+    
+    //Swap robot between sites
+    func siteRobotSwap(robotID: String, from currentSiteId: String, to newSiteId: String) async throws {
+        
+        // Remove the robot from the current site
+        let currentSiteRef = sitesCollection.document(currentSiteId)
+        try await currentSiteRef.updateData([
+            "robotIDs": FieldValue.arrayRemove([robotID])
+        ])
+        print("Removed robot from current site: \(currentSiteId)")
+
+        // Add the robot to the new site
+        let newSiteRef = sitesCollection.document(newSiteId)
+        try await newSiteRef.updateData([
+            "robotIDs": FieldValue.arrayUnion([robotID])
+        ])
+        print("Added robot to new site: \(newSiteId)")
+        
+        //Update robot's siteID
+        let robotRef = Firestore.firestore().collection("robots").document(robotID)
+            try await robotRef.updateData([
+                "siteID": newSiteId
+            ])
+        
+        // Create a transaction record
+        let transactionRecord = Transaction(entityType: "robot", entityId: robotID, siteId: currentSiteId, action: "robot swap", userId: currentUser, newSiteId: newSiteId)
+        print("Transaction recorded for robot swap")
+        
+        try await addTransaction(transactionRecord)
+    }
 }
