@@ -23,7 +23,7 @@ struct SiteRobotSwap: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Select New Site")) {
+                Section("Select New Site") {
                     Picker("Available Sites", selection: $selectedSiteId) {
                         ForEach(availableSites, id: \.id) { site in
                             Text(site.name).tag(site.id as String?)

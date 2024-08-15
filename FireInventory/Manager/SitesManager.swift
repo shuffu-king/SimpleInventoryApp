@@ -29,10 +29,11 @@ final class SitesManager {
         return snapshot.documents.compactMap{ try? $0.data(as: Site.self) }
     }
     
-    func updateSiteItemQuantity(siteId: String, itemId: String, quantity: Int) async throws {
+    func updateSiteItemQuantity(siteId: String, itemId: String, quantity: Int, isDamaged: Bool = false) async throws {
         let siteRef = sitesCollection.document(siteId)
+        let fieldKey = isDamaged ? "damagedItems.\(itemId)" : "items.\(itemId)"
         try await siteRef.updateData([
-            "items.\(itemId)" : FieldValue.increment(Int64(quantity))
+            fieldKey : FieldValue.increment(Int64(quantity))
         ])
         
     }
@@ -97,8 +98,31 @@ final class SitesManager {
             ])
         
         // Create a transaction record
-        let transactionRecord = Transaction(entityType: "robot", entityId: robotID, siteId: currentSiteId, action: "robot swap", userId: currentUser, newSiteId: newSiteId)
+        let transactionRecord = Transaction(entityType: "robot", entityId: robotID, siteId: currentSiteId, action: "robot swap", userId: currentUser, notes: "Transfered robot \(robotID) from site \(currentSiteId) to site \(newSiteId)", newSiteId: newSiteId)
         print("Transaction recorded for robot swap")
+        
+        try await addTransaction(transactionRecord)
+    }
+    
+    func transferItem(itemID: String, quantity: Int, from currentSiteId: String, to newSiteId: String, itemName: String) async throws {
+        let currentSiteRef = sitesCollection.document(currentSiteId)
+        let newSiteRef = sitesCollection.document(newSiteId)
+        
+        // Remove the specified quantity from the current site
+        try await currentSiteRef.updateData([
+            "items.\(itemID)": FieldValue.increment(Int64(-quantity))
+        ])
+        print("Removed \(quantity) of item \(itemID) from current site: \(currentSiteId)")
+        
+        // Add the specified quantity to the new site
+        try await newSiteRef.updateData([
+            "items.\(itemID)": FieldValue.increment(Int64(quantity))
+        ])
+        print()
+        
+        // Create a transaction record
+        let transactionRecord = Transaction(entityType: "item", entityId: itemID, siteId: currentSiteId, action: "item transfer", userId: currentUser, quantity: quantity, notes: "Added \(quantity) of item \(itemName) to new site: \(newSiteId)", newSiteId: newSiteId)
+        print("Transaction recorded for item transfer")
         
         try await addTransaction(transactionRecord)
     }

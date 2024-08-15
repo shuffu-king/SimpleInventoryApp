@@ -60,6 +60,6 @@ struct CartsView: View {
 }
 
 #Preview {
-    CartsView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["test_ids"]))
+    CartsView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
 }
 

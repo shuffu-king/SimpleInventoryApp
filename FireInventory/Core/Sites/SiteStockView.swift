@@ -66,6 +66,6 @@ struct SiteStockView: View {
 
 #Preview {
     NavigationStack {
-        SiteStockView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["test_ids"]), viewModel: SitesViewModel())
+        SiteStockView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), viewModel: SitesViewModel())
     }
 }

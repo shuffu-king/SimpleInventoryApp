@@ -28,7 +28,6 @@ final class ItemsManager {
             let item = try document.data(as: Item.self)
             items.append(item)
             
-            
         }
         return items
     }

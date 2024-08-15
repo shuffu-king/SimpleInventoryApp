@@ -106,5 +106,5 @@ struct AddRobotView: View {
 }
 
 #Preview {
-    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], userIDs: ["test_users"], robotIDs: ["gagflksjflo"]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
+    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["gagflksjflo"]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
 }

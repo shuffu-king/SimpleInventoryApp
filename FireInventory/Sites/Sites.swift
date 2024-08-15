@@ -12,6 +12,7 @@ struct Site: Identifiable, Codable {
     let name: String
     let location: String
     var items:  [String: Int]
+    var damagedItems: [String: Int]
     let userIDs: [String]
     var robotIDs: [String]
 }
