@@ -22,8 +22,16 @@ final class SitesViewModel: ObservableObject {
             return
         }
         self.sites = try await SitesManager.shared.getAllSites(for: userId)
-        print("Fetched sites: \(self.sites)")
-        
+    }
+    
+    func addSite(_ site: Site) async throws {
+        try await SitesManager.shared.addSite(site)
+        try await getAllSites()
+    }
+    
+    func deleteSite(_ siteId: String) async throws {
+        try await SitesManager.shared.deleteSite(siteId: siteId)
+        sites.removeAll { $0.id == siteId }
     }
     
     func getAllItems() async throws {

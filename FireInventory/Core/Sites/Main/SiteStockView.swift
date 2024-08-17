@@ -13,6 +13,8 @@ struct SiteStockView: View {
     
     let site: Site
     @ObservedObject var viewModel: SitesViewModel
+    @State private var showDeleteAlert = false
+    
     var body: some View {
         
         VStack(alignment: .leading, spacing: 10) {
@@ -58,9 +60,34 @@ struct SiteStockView: View {
                     .cornerRadius(10)
             }
             
+            Spacer()
+                
+        }
+        .padding()
+
+        VStack(alignment: .center) {
+            Button("Delete Site", role: .destructive){
+                showDeleteAlert.toggle()
+            }
         }
         .padding()
         .navigationTitle("\(site.name)")
+        .alert(isPresented: $showDeleteAlert){
+            Alert(
+                title: Text("Delete Site"),
+                message: Text("Are you sure you want to delete this site? This action cannot be undone."),
+                primaryButton: .destructive(Text("Delete")) {
+                    Task {
+                        do {
+                            try await viewModel.deleteSite(site.id)
+                        } catch {
+                            print("Error deleting site: \(error)")
+                        }
+                    }
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 

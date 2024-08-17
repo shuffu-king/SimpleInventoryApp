@@ -24,9 +24,28 @@ final class SitesManager {
         sitesCollection.document(siteId)
     }
     
+    //fetch all sites
     func getAllSites(for userId: String) async throws -> [Site] {
         let snapshot = try await sitesCollection.whereField("userIDs", arrayContains: userId).getDocuments()
         return snapshot.documents.compactMap{ try? $0.data(as: Site.self) }
+    }
+    
+    //add a new site
+    func addSite(_ site: Site) async throws {
+        var newSite = site
+        newSite.userIDs.append(currentUser)
+        try sitesCollection.document(newSite.id).setData(from: newSite)
+        let transactionRecord = Transaction(entityType: "site", entityId: site.id, siteId: site.id, action: "site creation", userId: currentUser)
+        try await addTransaction(transactionRecord)
+    }
+    
+    //delete a site
+    func deleteSite(siteId: String) async throws {
+        let siteRef = siteDocument(siteId: siteId)
+        try await siteRef.delete()
+        //create transaction record
+        let transactionRecord = Transaction(entityType: "site", entityId: siteId, siteId: siteId, action: "site deletion", userId: currentUser)
+        try await addTransaction(transactionRecord)
     }
     
     func updateSiteItemQuantity(siteId: String, itemId: String, quantity: Int, isDamaged: Bool = false) async throws {
@@ -35,7 +54,6 @@ final class SitesManager {
         try await siteRef.updateData([
             fieldKey : FieldValue.increment(Int64(quantity))
         ])
-        
     }
     
     func updateSiteRobots(siteID: String, robotID: String, add: Bool) async throws {

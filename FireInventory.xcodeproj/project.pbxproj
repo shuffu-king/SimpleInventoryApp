@@ -47,6 +47,7 @@
 		3C7D3B372C6BC2E100083B7F /* SiteRobotSwap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B362C6BC2E100083B7F /* SiteRobotSwap.swift */; };
 		3C7D3B392C6C238400083B7F /* ItemTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B382C6C238400083B7F /* ItemTransferView.swift */; };
 		3C7D3B3B2C6E4F2600083B7F /* DeletedItemUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */; };
+		3C7D3B3E2C6ECCFA00083B7F /* AddSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B3D2C6ECCFA00083B7F /* AddSiteView.swift */; };
 		3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */; };
 		3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC772C3EE073007BEDAA /* Assets.xcassets */; };
 		3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC7A2C3EE073007BEDAA /* Preview Assets.xcassets */; };
@@ -98,6 +99,7 @@
 		3C7D3B362C6BC2E100083B7F /* SiteRobotSwap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteRobotSwap.swift; sourceTree = "<group>"; };
 		3C7D3B382C6C238400083B7F /* ItemTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTransferView.swift; sourceTree = "<group>"; };
 		3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedItemUpdateView.swift; sourceTree = "<group>"; };
+		3C7D3B3D2C6ECCFA00083B7F /* AddSiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSiteView.swift; sourceTree = "<group>"; };
 		3CB2EC702C3EE06E007BEDAA /* FireInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireInventoryApp.swift; sourceTree = "<group>"; };
 		3CB2EC772C3EE073007BEDAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -221,13 +223,11 @@
 		3C213B5A2C43315400804BC9 /* Sites */ = {
 			isa = PBXGroup;
 			children = (
+				3C7D3B3C2C6ECCDA00083B7F /* Main */,
 				3C7D3B332C6B840000083B7F /* Items */,
 				3C7D3B1C2C6AC2FB00083B7F /* Carts */,
 				3C213B612C4612E400804BC9 /* StockUpdate */,
 				3C7D3B162C6AC2DC00083B7F /* Robots */,
-				3C213B5D2C43317300804BC9 /* SitesView.swift */,
-				3C213B5F2C434CA000804BC9 /* SiteStockView.swift */,
-				3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */,
 			);
 			path = Sites;
 			sourceTree = "<group>";
@@ -323,6 +323,17 @@
 				3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */,
 			);
 			path = Items;
+			sourceTree = "<group>";
+		};
+		3C7D3B3C2C6ECCDA00083B7F /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3C213B5D2C43317300804BC9 /* SitesView.swift */,
+				3C213B5F2C434CA000804BC9 /* SiteStockView.swift */,
+				3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */,
+				3C7D3B3D2C6ECCFA00083B7F /* AddSiteView.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		3CB2EC672C3EE06E007BEDAA = {
@@ -468,6 +479,7 @@
 				3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */,
 				3C7D3B392C6C238400083B7F /* ItemTransferView.swift in Sources */,
 				3C7D3B172C6AC2DC00083B7F /* AddRobotView.swift in Sources */,
+				3C7D3B3E2C6ECCFA00083B7F /* AddSiteView.swift in Sources */,
 				3C213B4F2C41B06C00804BC9 /* Items.swift in Sources */,
 				3CB2EC912C3F877B007BEDAA /* RootView.swift in Sources */,
 				3C7D3B1D2C6AC2FB00083B7F /* CartsView.swift in Sources */,

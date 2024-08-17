@@ -19,7 +19,8 @@ struct AddCartView: View {
     
     @State private var isSelectRobotPresented = false
     @State private var selectedPosition: PartPosition = .TL
-    
+    @State private var showAlert = false
+
     var body: some View {
         NavigationStack {
             Form {
@@ -56,7 +57,7 @@ struct AddCartView: View {
                     }
                     if let selectedBackLeft = selectedBackLeft {
                         VStack (alignment: .leading){
-                            Text("Selected: \(selectedBackLeft.serialNumber)")
+                            Text("\(selectedBackLeft.serialNumber)")
                             Text("G\(selectedBackLeft.version.rawValue)")
                                 .opacity(0.4)
                         }
@@ -68,7 +69,7 @@ struct AddCartView: View {
                     }
                     if let selectedBackRight = selectedBackRight {
                         VStack(alignment: .leading) {
-                            Text("Selected: \(selectedBackRight.serialNumber)")
+                            Text("\(selectedBackRight.serialNumber)")
                             Text("G\(selectedBackRight.version.rawValue)")
                                 .opacity(0.4)
                         }
@@ -77,16 +78,22 @@ struct AddCartView: View {
                 }
                 
                 Button("Add Cart") {
-                    let newCart = Cart(
-                        name: cartName,
-                        TLserialNumber: selectedTopLeft?.serialNumber,
-                        TRserialNumber: selectedTopRight?.serialNumber,
-                        BLserialNumber: selectedBackLeft?.serialNumber,
-                        BRserialNumber: selectedBackRight?.serialNumber
-                    )
-                    Task{
-                        try await viewModel.addCart(for: siteId, cart: newCart)
-                        presentationMode.wrappedValue.dismiss()
+                    
+                    if !cartName.isEmpty {
+                        let newCart = Cart(
+                            name: cartName,
+                            TLserialNumber: selectedTopLeft?.serialNumber,
+                            TRserialNumber: selectedTopRight?.serialNumber,
+                            BLserialNumber: selectedBackLeft?.serialNumber,
+                            BRserialNumber: selectedBackRight?.serialNumber
+                        )
+                        
+                        Task{
+                            try await viewModel.addCart(for: siteId, cart: newCart)
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    } else {
+                        showAlert.toggle()
                     }
                 }
             }
@@ -101,7 +108,6 @@ struct AddCartView: View {
                         clearSelectedRobots()
                     }
                 }
-                
             }
             .sheet(isPresented: $isSelectRobotPresented) {
                 SelectRobotView(
@@ -111,6 +117,9 @@ struct AddCartView: View {
                     position: selectedPosition,
                     viewModel: viewModel
                 )
+            }
+            .alert("One or more fields missing", isPresented: $showAlert) {
+                Button("OK", role: .cancel){ }
             }
         }
     }

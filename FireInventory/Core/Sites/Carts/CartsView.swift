@@ -17,7 +17,6 @@ struct CartsView: View {
         NavigationStack {
             List {
                 ForEach(viewModel.carts) { cart in
-//                    CartRowView(cart: cart, viewModel: viewModel, siteId: site.id)
                     NavigationLink {
                         CartDetailView(cart: cart, viewModel: viewModel, siteId: site.id)
                     } label: {

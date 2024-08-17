@@ -10,22 +10,22 @@ import SwiftUI
 struct SitesView: View {
     
     @StateObject private var viewModel = SitesViewModel()
+    @State private var showAddView = false
     
     var body: some View {
-        
-        List{
+        List {
             ForEach(viewModel.sites) { site in
                 
                 NavigationLink {
                     SiteStockView(site: site, viewModel: viewModel)
                 } label: {
                     VStack(alignment: .leading) {
-                        Text("Site ID: \(site.id)")
                         Text(site.name)
                         Text(site.location)
+                            .opacity(0.7)
+                        Text("Site ID: \(site.id)")
                             .opacity(0.4)
                     }
-                    
                 }
             }
         }
@@ -33,7 +33,14 @@ struct SitesView: View {
         .task {
             try? await viewModel.getAllSites()
             try? await viewModel.getAllItems()
-            
+        }
+        .toolbar {
+            Button("Add button", systemImage: "plus") {
+                showAddView.toggle()
+            }
+        }
+        .sheet(isPresented: $showAddView){
+            AddSiteView(viewModel: viewModel, showAddView: $showAddView)
         }
         
     }

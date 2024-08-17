@@ -10,6 +10,7 @@ import SwiftUI
 struct CartDetailView: View {
     let cart: Cart
     @ObservedObject var viewModel: CartViewModel
+    @StateObject var robotsViewModel = RobotsViewModel()
     let siteId: String
     
     @State private var selectedRobot: String? = nil
@@ -17,35 +18,12 @@ struct CartDetailView: View {
     
     @State private var selectedCart: Cart? = nil
     @State private var isSwapViewPresented = false
+//    @State private var isRobotDetailViewPresented = false
+//    @State private var robotForDetailView: Robot? = nil
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 15) {
-                
-                //                HStack {
-                //                    Text("TL: \(cart.TLserialNumber ?? "None")")
-                //                    Spacer()
-                //                    robotSwapButton(robot: cart.TLserialNumber, position: .TL, cart: cart)
-                //                }
-                
-                //                HStack {
-                //                    Text("TR: \(cart.TRserialNumber ?? "None")")
-                //                    Spacer()
-                //                    robotSwapButton(robot: cart.TRserialNumber, position: .TR, cart: cart)
-                //                }
-                
-                //                HStack {
-                //                    Text("BL: \(cart.BLserialNumber ?? "None")")
-                //                    Spacer()
-                //                    robotSwapButton(robot: cart.BLserialNumber, position: .BL, cart: cart)
-                //                }
-                
-                //                HStack {
-                //                    Text("BR: \(cart.BRserialNumber ?? "None")")
-                //                    Spacer()
-                //                    robotSwapButton(robot: cart.BRserialNumber, position: .BR, cart: cart)
-                //                }
-                
                 robotDetailView(position: .TL, serialNumber: cart.TLserialNumber)
                 robotDetailView(position: .TR, serialNumber: cart.TRserialNumber)
                 robotDetailView(position: .BL, serialNumber: cart.BLserialNumber)
@@ -53,9 +31,11 @@ struct CartDetailView: View {
             }
             .font(.headline)
             .sheet(isPresented: $isSwapViewPresented) {
-                
                 SwapRobotView(selectedRobot: $selectedRobot, position: $selectedPosition, isPresented: $isSwapViewPresented, cart: cart, viewModel: viewModel, siteId: siteId)
             }
+//            .sheet(item: $robotForDetailView) { robot in
+//                    RobotDetailView(robot: robot, siteId: siteId, viewModel: robotsViewModel)
+//            }
             .navigationTitle(cart.name)
             .padding()
             .onAppear {
@@ -93,16 +73,25 @@ struct CartDetailView: View {
                     Text("(G\(robot.version.rawValue))")
                         .opacity(0.5)
                 }
-
+                
+                Spacer()
+                
+                Button() {
+//                    robotForDetailView = robot
+//                    isRobotDetailViewPresented.toggle()
+                } label: {
+                    Image(systemName: "transmission")
+                }
+                
+                robotSwapButton(robot: serialNumber, position: position, cart: cart)
             } else {
+                
                 Text("\(position.rawValue): None")
             }
-            Spacer()
-            robotSwapButton(robot: serialNumber, position: position, cart: cart)
         }
     }
 }
 
-#Preview {
-    CartDetailView(cart: Cart(name: "test cart"), viewModel: CartViewModel(), siteId: "Asdgadgasd")
-}
+    #Preview {
+        CartDetailView(cart: Cart(name: "test cart"), viewModel: CartViewModel(), robotsViewModel: RobotsViewModel(), siteId: "Asdgadgasd")
+    }

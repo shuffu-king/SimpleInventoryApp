@@ -45,6 +45,11 @@ struct EditRobotView: View {
                     TextEditor(text: $robotNotes)
                         .frame(height: 100)
                 }
+                
+                Button("Change Wheel") {
+                    
+                }
+                .buttonBorderShape(.roundedRectangle(radius: 15))
             }
             .navigationTitle("Edit Robot")
             .toolbar {
