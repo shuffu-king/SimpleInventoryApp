@@ -14,7 +14,7 @@ struct SwapRobotView: View {
     @Binding var isPresented: Bool
     let cart: Cart
     let viewModel: CartViewModel
-    let siteId: String
+    let site: Site
     @State private var swapNotes = ""
     @State private var showAlert = false
     @State private var availableRobots: [Robot] = []
@@ -29,69 +29,90 @@ struct SwapRobotView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                Text("\(position.rawValue) Swap")
-                    .font(.headline)
-                
-                Section("Reason for swap"){
-                    TextEditor(text: $swapNotes)
+            ZStack {
+                Color.appBackgroundColor.ignoresSafeArea()
+            
+                Form {
+                    Text("\(position.rawValue) Swap")
+                        .font(.headline)
+                        .foregroundStyle(Color.offWhite)
+                        .listRowBackground(Color.deepBlue)
                     
-                }
-                
-                if !newRobots.isEmpty {
-                    Section("New Robots"){
-                        ForEach(newRobots) { robot in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(robot.serialNumber)
-                                    Text("G\(robot.version.rawValue)")
-                                        .opacity(0.4)
-                                }
-                                Spacer()
-                                Button("Select") {
-                                    if swapNotes.isEmpty {
-                                        showAlert = true
-                                    } else{
-                                        Task {
-                                            try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: siteId, notes: swapNotes)
-                                            selectedRobot = robot.serialNumber
-                                            isPresented = false
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    Section("Reason for swap"){
+                        TextEditor(text: $swapNotes)
+                            .foregroundStyle(Color.offWhite)
                     }
-                }
-                
-                if !refurbishedRobots.isEmpty {
-                    Section("Refurbished Robots"){
-                        ForEach(refurbishedRobots) { robot in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    Text(robot.serialNumber)
-                                    Text("G\(robot.version.rawValue)")
-                                        .opacity(0.4)
-                                }
-                                Spacer()
-                                Button("Select") {
-                                    if swapNotes.isEmpty {
-                                        showAlert = true
-                                    } else {
-                                        Task {
-                                            try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: siteId, notes: swapNotes)
-                                            selectedRobot = robot.serialNumber
-                                            await loadAvailableRobots()
-                                            isPresented = false
+                    .foregroundStyle(Color.neonGreen)
+                    .listRowBackground(Color.deepBlue)
+                    
+                    if !newRobots.isEmpty {
+                        Section("New Robots"){
+                            ForEach(newRobots) { robot in
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(robot.serialNumber)
+                                            .foregroundStyle(Color.offWhite)
+                                            .font(.headline)
+                                        Text("G\(robot.version.rawValue)")
+                                            .foregroundStyle(Color.offWhite)
+                                            .font(.subheadline)
+                                            .opacity(0.4)
+                                    }
+                                    Spacer()
+                                    Button("Select") {
+                                        if swapNotes.isEmpty {
+                                            showAlert = true
+                                        } else{
+                                            Task {
+                                                try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: site, notes: swapNotes)
+                                                selectedRobot = robot.serialNumber
+                                                isPresented = false
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        .foregroundStyle(Color.neonGreen)
+                        .listRowBackground(Color.deepBlue)
+                    }
+                    
+                    if !refurbishedRobots.isEmpty {
+                        Section("Refurbished Robots"){
+                            ForEach(refurbishedRobots) { robot in
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(robot.serialNumber)
+                                            .foregroundStyle(Color.offWhite)
+                                            .font(.headline)
+                                        Text("G\(robot.version.rawValue)")
+                                            .foregroundStyle(Color.offWhite)
+                                            .font(.subheadline)
+                                            .opacity(0.4)
+                                    }
+                                    Spacer()
+                                    Button("Select") {
+                                        if swapNotes.isEmpty {
+                                            showAlert = true
+                                        } else {
+                                            Task {
+                                                try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: site, notes: swapNotes)
+                                                selectedRobot = robot.serialNumber
+                                                await loadAvailableRobots()
+                                                isPresented = false
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .foregroundStyle(Color.neonGreen)
+                        .listRowBackground(Color.deepBlue)
                     }
                 }
             }
-            .navigationTitle("Swap Robot")
+            .scrollContentBackground(.hidden)
+            .background(Color.appBackgroundColor.ignoresSafeArea())
             .task {
                 print("swap view \(position)")
                 await loadAvailableRobots()
@@ -99,7 +120,7 @@ struct SwapRobotView: View {
             .onDisappear {
                 Task {
                     // Refresh robots in the view model
-                    try? await viewModel.getAllRobots(for: siteId)
+                    try? await viewModel.getAllRobots(for: site.id)
                 }
             }
             .alert("Missing Field", isPresented: $showAlert) {
@@ -118,5 +139,5 @@ struct SwapRobotView: View {
 }
 
 #Preview {
-    SwapRobotView(selectedRobot: .constant("fdkngs;klm"), position: .constant(.BL), isPresented: .constant(false), cart: Cart(name: "rgnmrl;f"), viewModel: CartViewModel(), siteId: "gknserjbf")
+    SwapRobotView(selectedRobot: .constant("fdkngs;klm"), position: .constant(.BL), isPresented: .constant(false), cart: Cart(name: "rgnmrl;f"), viewModel: CartViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
 }

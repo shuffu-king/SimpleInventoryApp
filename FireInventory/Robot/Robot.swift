@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct Robot: Identifiable, Codable, Hashable {
     var id: String {serialNumber}
     let serialNumber: String
@@ -17,6 +15,15 @@ struct Robot: Identifiable, Codable, Hashable {
     var health: RobotHealth
     var siteID: String
     var notes: String?
+    var wheelType: String {
+            switch position {
+            case .TL, .BR:
+                return "Mecanum-TL-BR"
+            case .TR, .BL:
+                return "Mecanum-TR-BL"
+            }
+        } // New property for wheel item
+    var wheelInstallationDate: Date? // Track when the wheel was installed
 }
 
 enum PartPosition: String, Codable, CaseIterable, Hashable {

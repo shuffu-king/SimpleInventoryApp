@@ -15,7 +15,7 @@ struct AddCartView: View {
     @State private var selectedBackLeft: Robot? = nil
     @State private var selectedBackRight: Robot? = nil
     @ObservedObject var viewModel: CartViewModel
-    let siteId: String
+    let site: Site
     
     @State private var isSelectRobotPresented = false
     @State private var selectedPosition: PartPosition = .TL
@@ -23,84 +23,107 @@ struct AddCartView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Cart Details") {
-                    TextField("Cart Name", text: $cartName)
-                    
-                    Button("Select TL") {
-                        selectedPosition = .TL
-                        isSelectRobotPresented = true
-                    }
-                    if let selectedTopLeft = selectedTopLeft {
-                        VStack(alignment: .leading) {
-                            Text("\(selectedTopLeft.serialNumber)")
-                            Text("G\(selectedTopLeft.version.rawValue)")
-                                .opacity(0.4)
+            ZStack {
+                Color.appBackgroundColor.ignoresSafeArea()
+                VStack {
+                    Form {
+                        Section("Cart Details") {
+                            
+                            ZStack(alignment: .leading) {
+                                if cartName.isEmpty {
+                                    Text("Enter Cart Name")
+                                        .foregroundColor(.offWhite)
+                                        .padding(.leading, -0)
+                                }
+                                
+                                TextField("", text: $cartName)
+                                    .foregroundStyle(Color.offWhite)
+                                    .font(.headline)
+                            }
+                            
+                            
+                            
+                            
+                            Button("Select TL") {
+                                selectedPosition = .TL
+                                isSelectRobotPresented = true
+                            }
+                            if let selectedTopLeft = selectedTopLeft {
+                                VStack(alignment: .leading) {
+                                    Text("\(selectedTopLeft.serialNumber)")
+                                    Text("G\(selectedTopLeft.version.rawValue)")
+                                        .opacity(0.4)
+                                }
+                            }
+
+                            
+                            Button("Select TR") {
+                                selectedPosition = .TR
+                                isSelectRobotPresented = true
+                            }
+                            if let selectedTopRight = selectedTopRight {
+                                VStack(alignment: .leading) {
+                                    Text("\(selectedTopRight.serialNumber)")
+                                    Text("G\(selectedTopRight.version.rawValue)")
+                                        .opacity(0.4)
+                                }
+                            }
+                            
+                            Button("Select BL") {
+                                selectedPosition = .BL
+                                isSelectRobotPresented = true
+                            }
+                            if let selectedBackLeft = selectedBackLeft {
+                                VStack (alignment: .leading){
+                                    Text("\(selectedBackLeft.serialNumber)")
+                                    Text("G\(selectedBackLeft.version.rawValue)")
+                                        .opacity(0.4)
+                                }
+                            }
+                            
+                            Button("Select BR") {
+                                selectedPosition = .BR
+                                isSelectRobotPresented = true
+                            }
+                            if let selectedBackRight = selectedBackRight {
+                                VStack(alignment: .leading) {
+                                    Text("\(selectedBackRight.serialNumber)")
+                                    Text("G\(selectedBackRight.version.rawValue)")
+                                        .opacity(0.4)
+                                }
+                            }
                         }
-                    }
-                    
-                    Button("Select TR") {
-                        selectedPosition = .TR
-                        isSelectRobotPresented = true
-                    }
-                    if let selectedTopRight = selectedTopRight {
-                        VStack(alignment: .leading) {
-                            Text("\(selectedTopRight.serialNumber)")
-                            Text("G\(selectedTopRight.version.rawValue)")
-                                .opacity(0.4)
-                        }
-                    }
-                    
-                    Button("Select BL") {
-                        selectedPosition = .BL
-                        isSelectRobotPresented = true
-                    }
-                    if let selectedBackLeft = selectedBackLeft {
-                        VStack (alignment: .leading){
-                            Text("\(selectedBackLeft.serialNumber)")
-                            Text("G\(selectedBackLeft.version.rawValue)")
-                                .opacity(0.4)
-                        }
-                    }
-                    
-                    Button("Select BR") {
-                        selectedPosition = .BR
-                        isSelectRobotPresented = true
-                    }
-                    if let selectedBackRight = selectedBackRight {
-                        VStack(alignment: .leading) {
-                            Text("\(selectedBackRight.serialNumber)")
-                            Text("G\(selectedBackRight.version.rawValue)")
-                                .opacity(0.4)
-                        }
-                    }
-                    
-                }
-                
-                Button("Add Cart") {
-                    
-                    if !cartName.isEmpty {
-                        let newCart = Cart(
-                            name: cartName,
-                            TLserialNumber: selectedTopLeft?.serialNumber,
-                            TRserialNumber: selectedTopRight?.serialNumber,
-                            BLserialNumber: selectedBackLeft?.serialNumber,
-                            BRserialNumber: selectedBackRight?.serialNumber
-                        )
+                        .listRowBackground(Color.deepBlue)
                         
-                        Task{
-                            try await viewModel.addCart(for: siteId, cart: newCart)
-                            presentationMode.wrappedValue.dismiss()
+                        Button("Create New Cart") {
+                            
+                            if !cartName.isEmpty {
+                                let newCart = Cart(
+                                    name: cartName,
+                                    TLserialNumber: selectedTopLeft?.serialNumber,
+                                    TRserialNumber: selectedTopRight?.serialNumber,
+                                    BLserialNumber: selectedBackLeft?.serialNumber,
+                                    BRserialNumber: selectedBackRight?.serialNumber
+                                )
+                                
+                                Task{
+                                    try await viewModel.addCart(for: site, cart: newCart)
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            } else {
+                                showAlert.toggle()
+                            }
                         }
-                    } else {
-                        showAlert.toggle()
+                        .foregroundStyle(Color.offWhite)
+                        .listRowBackground(Color.deepBlue)
                     }
                 }
+
             }
-            .navigationTitle("Add Cart")
+            .navigationTitle("Create New Cart")
             .task {
-                try? await viewModel.getAllRobots(for: siteId)
-                try? await viewModel.getAllCarts(for: siteId)
+                try? await viewModel.getAllRobots(for: site.id)
+                try? await viewModel.getAllCarts(for: site.id)
             }
             .toolbar {
                 if !((serialForSelectedPosition()?.isEmpty) == nil) {
@@ -159,5 +182,5 @@ struct AddCartView: View {
 }
 
 #Preview {
-    AddCartView(viewModel: CartViewModel(), siteId: "asdrujgfhasdjkl")
+    AddCartView(viewModel: CartViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["hbkjbkjbk"]))
 }

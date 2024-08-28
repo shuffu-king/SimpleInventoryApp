@@ -17,10 +17,10 @@ final class DeletedItemUpdateViewModel: ObservableObject {
     func updateItemQuantity(site: Site, viewModel: SitesViewModel) {
         guard !selectedItemID.isEmpty else { return }
         
-        let itemName = viewModel.getItemName(by: selectedItemID)
+        let itemName = selectedItemID
         
         let change = isPush ? quantity : -quantity
-        viewModel.updateItemQuantity(siteId: site.id, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: "for item \(itemName)", userId: AuthenticationManager.shared.getCurrentUserId() ?? "unknown", isDamaged: true)
+        viewModel.updateItemQuantity(site: site, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: "for item \(itemName)", userId: AuthenticationManager.shared.getCurrentUserId() ?? "unknown", isDamaged: true)
     }
 }
 
@@ -36,14 +36,14 @@ struct DeletedItemUpdateView: View {
             Form {
                 Picker("Select Item", selection: $viewModel.selectedItemID) {
                     ForEach(site.items.keys.sorted(), id: \.self){ itemId in
-                        Text(siteViewModel.getItemName(by: itemId)).tag(itemId)
+                        Text(itemId).tag(itemId)
                     }
                 }
                 
                 Stepper("Quantity: \(viewModel.quantity)", value: $viewModel.quantity, in: 1...50)
                                 
                 Button("Apply"){
-                    viewModel.notes = "item name: \(siteViewModel.getItemName(by: viewModel.selectedItemID))"
+                    viewModel.notes = "item name: \(viewModel.selectedItemID)"
                     viewModel.updateItemQuantity(site: site, viewModel: siteViewModel)
                     viewModel.selectedItemID = ""
                     viewModel.quantity = 1
@@ -56,7 +56,7 @@ struct DeletedItemUpdateView: View {
                     viewModel.selectedItemID = firstItemId
                 }
             }
-            .navigationTitle(viewModel.isPush ? "Push to Deleted" : "Pull from Deleted")
+            .navigationTitle(viewModel.isPush ? "Push to Damaged" : "Pull from Damaged")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Close") {
@@ -72,5 +72,5 @@ struct DeletedItemUpdateView: View {
 }
 
 #Preview {
-    DeletedItemUpdateView(viewModel: DeletedItemUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(false))
+    DeletedItemUpdateView(viewModel: DeletedItemUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(false))
 }

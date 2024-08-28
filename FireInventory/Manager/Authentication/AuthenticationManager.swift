@@ -62,5 +62,8 @@ final class AuthenticationManager {
         return Auth.auth().currentUser?.uid
     }
     
+    func getCurrentUserEmail() -> String? {
+        return Auth.auth().currentUser?.email
+    }
     
 }

@@ -29,6 +29,7 @@ final class ItemsManager {
             items.append(item)
             
         }
+        
         return items
     }
 }

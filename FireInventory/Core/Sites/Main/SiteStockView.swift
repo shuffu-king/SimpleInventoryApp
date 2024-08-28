@@ -13,86 +13,132 @@ struct SiteStockView: View {
     
     let site: Site
     @ObservedObject var viewModel: SitesViewModel
-    @State private var showDeleteAlert = false
     
     var body: some View {
-        
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Site ID: \(site.id)")
-                .font(.headline)
-            Text("Location: \(site.location)")
-                .font(.subheadline)
-                .opacity(0.7)
-            
-            NavigationLink {
-                RobotsView(site: site)
-            } label: {
-                Text("Robots")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.red)
-                    .cornerRadius(10)
-            }
-            
-            NavigationLink {
-                CartsView(site: site)
-            } label: {
-                Text("Carts")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.green)
-                    .cornerRadius(10)
-            }
-            
-            NavigationLink {
-                ItemsView(site: site, viewModel: viewModel)
-            } label: {
-                Text("Items")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-            
-            Spacer()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Site Information
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(site.name)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.offWhite)
+                    
+                    Text("Location: \(site.location)")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.offWhite)
+                        .opacity(0.6)
+                    
+                    Text("Site ID: \(site.id)")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.offWhite)
+                        .opacity(0.6)
+                }
+                .padding()
+                .background(Color(Color.deepBlue))
+                .cornerRadius(12)
+                .frame(maxWidth: .infinity)
                 
-        }
-        .padding()
-
-        VStack(alignment: .center) {
-            Button("Delete Site", role: .destructive){
-                showDeleteAlert.toggle()
-            }
-        }
-        .padding()
-        .navigationTitle("\(site.name)")
-        .alert(isPresented: $showDeleteAlert){
-            Alert(
-                title: Text("Delete Site"),
-                message: Text("Are you sure you want to delete this site? This action cannot be undone."),
-                primaryButton: .destructive(Text("Delete")) {
-                    Task {
-                        do {
-                            try await viewModel.deleteSite(site.id)
-                        } catch {
-                            print("Error deleting site: \(error)")
+                // Navigation Links
+                VStack(spacing: 15) {
+                    NavigationLink {
+                        RobotsView(site: site)
+                    } label: {
+                        Label("Wheels", systemImage: "transmission")
+                            .font(.headline)
+                            .foregroundStyle(Color.deepBlue)
+                            .frame(height: 55)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.neonGreen)
+                            .cornerRadius(12)
+                    }
+                    
+                    NavigationLink {
+                        CartsView(site: site)
+                    } label: {
+                        Label("Carts", systemImage: "cart")
+                            .font(.headline)
+                            .foregroundStyle(Color.deepBlue)
+                            .frame(height: 55)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.neonGreen)
+                            .cornerRadius(12)
+                    }
+                    
+                    NavigationLink {
+                        ItemsView(site: site, viewModel: viewModel)
+                    } label: {
+                        Label("Items", systemImage: "cube.box.fill")
+                            .font(.headline)
+                            .foregroundStyle(Color.deepBlue)
+                            .frame(height: 55)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.neonGreen)
+                            .cornerRadius(12)
+                    }
+                }
+                .padding(.horizontal)
+                
+                // Transactions Section
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Transactions")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal)
+                        .foregroundStyle(Color.offWhite)
+                    
+                    ScrollView {
+                        ForEach(viewModel.transactions) { transaction in
+                            ZStack(alignment: .leading) {
+                                Color.deepBlue
+                                    .cornerRadius(12)
+                                
+                                VStack(alignment: .leading, spacing: 5) {
+                                    
+                                    if transaction.entityType == "site" {
+                                        Text("Site ID: \(transaction.siteId)")
+                                            .font(.headline)
+                                    } else {
+                                        Text("Entity ID: \(transaction.entityId)")
+                                            .font(.headline)
+                                        
+                                        Text("Entity type: \(transaction.entityType)")
+                                            .font(.headline)
+                                    }
+                                    
+                                    Text("Action: \(transaction.action)")
+                                        .font(.subheadline)
+                                    
+                                    Text("User: \(transaction.userId)")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text("Date: \(transaction.timestamp.dateValue().formatted(date: .abbreviated, time: .shortened))")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(8)
+                            }
+                            .padding(.vertical, 4)
+                            .padding(.horizontal)
                         }
                     }
-                },
-                secondaryButton: .cancel()
-            )
+                    .frame(maxHeight: 300)
+                }
+            }
+            .padding()
+        }
+        .background(Color(Color.appBackgroundColor))
+        .onAppear {
+            Task {
+                try await viewModel.fetchTransactions(for: site.name)
+            }
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        SiteStockView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), viewModel: SitesViewModel())
+        SiteStockView(site: Site(id: "ugbslkes", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), viewModel: SitesViewModel())
     }
 }

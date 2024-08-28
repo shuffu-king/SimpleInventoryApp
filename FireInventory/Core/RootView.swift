@@ -21,13 +21,15 @@ struct RootView: View {
                 }
             }
         }
+        .background(Color.appBackgroundColor)
+        .edgesIgnoringSafeArea(.all)
         .onAppear {
             let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
             self.showSignInView = authUser == nil
         }
         .fullScreenCover(isPresented: $showSignInView) {
             NavigationStack {
-                AuthenticationView(showSignInView: $showSignInView)
+                EmailSignInView(showSignInView: $showSignInView)
             }
         }
     }

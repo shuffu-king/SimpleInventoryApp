@@ -20,7 +20,7 @@ final class StockUpdateViewModel: ObservableObject {
         let itemName = viewModel.getItemName(by: selectedItemID)
         
         let change = isPush ? quantity : -quantity
-        viewModel.updateItemQuantity(siteId: site.id, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: "for item \(itemName)", userId: AuthenticationManager.shared.getCurrentUserId() ?? "unknown")
+        viewModel.updateItemQuantity(site: site, itemId: selectedItemID, change: change, type: isPush ? "Push" : "Pull", notes: "for item \(itemName)", userId: AuthenticationManager.shared.getCurrentUserId() ?? "unknown")
     }
 }
 
@@ -36,7 +36,7 @@ struct StockUpdateView: View {
             Form {
                 Picker("Select Item", selection: $viewModel.selectedItemID) {
                     ForEach(site.items.keys.sorted(), id: \.self){ itemId in
-                        Text(siteViewModel.getItemName(by: itemId)).tag(itemId)
+                        Text(itemId).tag(itemId)
                     }
                 }
                 
@@ -73,5 +73,5 @@ struct StockUpdateView: View {
 }
 
 #Preview {
-    StockUpdateView(viewModel: StockUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(true))
+    StockUpdateView(viewModel: StockUpdateViewModel(), siteViewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(true))
 }

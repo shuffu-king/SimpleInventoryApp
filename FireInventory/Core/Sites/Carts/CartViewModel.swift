@@ -29,18 +29,18 @@ final class CartViewModel: ObservableObject {
         self.robots = try await RobotManager.shared.getAllRobots(for: siteID)
     }
     
-    func addCart(for siteId: String, cart: Cart) async throws {
+    func addCart(for site: Site, cart: Cart) async throws {
         do {
-            try await CartsManager.shared.addCart(cart, to: siteId)
-            try await getAllCarts(for: siteId)
+            try await CartsManager.shared.addCart(cart, to: site)
+            try await getAllCarts(for: site.id)
         } catch {
             print("Error adding cart: \(error.localizedDescription)")
         }    }
     
-    func deleteCart(for siteId: String, cartId: String) async throws {
+    func deleteCart(for site: Site, cartId: String) async throws {
         do {
-            try await CartsManager.shared.deleteCart(named: cartId, from: siteId)
-            try await getAllCarts(for: siteId)
+            try await CartsManager.shared.deleteCart(named: cartId, from: site)
+            try await getAllCarts(for: site.id)
         } catch {
             print("Error deleting cart: \(error.localizedDescription)")
         }    }
@@ -54,18 +54,18 @@ final class CartViewModel: ObservableObject {
         }
     }
     
-    func swapRobot(in cart: Cart, for position: PartPosition, with newRobotSN: String, from siteId: String, notes: String?) async throws{
+    func swapRobot(in cart: Cart, for position: PartPosition, with newRobotSN: String, from site: Site, notes: String?) async throws{
 
         do {
-            try await CartsManager.shared.swapRobot(in: cart, at: position, with: newRobotSN, for: siteId, notes: notes)
-            try await getAllCarts(for: siteId)
+            try await CartsManager.shared.swapRobot(in: cart, at: position, with: newRobotSN, for: site, notes: notes)
+            try await getAllCarts(for: site.id)
         } catch {
             print("Error updating cart: \(error)")
         }
     }
     
-    func updateRobot(from siteId: String, robot: Robot) async throws{
-        try await RobotManager.shared.updateRobot(robot, siteId: siteId)
+    func updateRobot(from site: Site, robot: Robot) async throws{
+        try await RobotManager.shared.updateRobot(robot, site: site)
     }
     
     func getAvailableRobots(for position: PartPosition, currentRobotSerial: String?) -> [Robot] {

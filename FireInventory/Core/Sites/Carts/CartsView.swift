@@ -18,25 +18,30 @@ struct CartsView: View {
             List {
                 ForEach(viewModel.carts) { cart in
                     NavigationLink {
-                        CartDetailView(cart: cart, viewModel: viewModel, siteId: site.id)
+                        CartDetailView(cart: cart, viewModel: viewModel, site: site)
+                            .background(Color.appBackgroundColor.ignoresSafeArea())
                     } label: {
                         VStack {
                             Text(cart.name)
                                 .font(.headline)
+                                .foregroundStyle(Color.offWhite)
                         }
+                        .padding()
                     }
-
+                    .listRowBackground(Color.deepBlue)
                 }
                 .onDelete { IndexSet in
                     Task {
                         if let index = IndexSet.first {
                             let cart = viewModel.carts[index]
-                            try await viewModel.deleteCart(for: site.id, cartId: cart.id)
+                            try await viewModel.deleteCart(for: site, cartId: cart.id)
                         }
                     }
                     
                 }
             }
+            .background(Color(Color.appBackgroundColor))
+            .listStyle(PlainListStyle())
             .navigationTitle("Carts")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -46,7 +51,8 @@ struct CartsView: View {
                         Image(systemName: "plus")
                     }
                     .sheet(isPresented: $showingAddCartView){
-                        AddCartView(viewModel: viewModel, siteId: site.id)
+                        AddCartView(viewModel: viewModel, site: site)
+                            .background(Color.appBackgroundColor.ignoresSafeArea())
                     }
                 }
             }
@@ -59,6 +65,6 @@ struct CartsView: View {
 }
 
 #Preview {
-    CartsView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
+    CartsView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
 }
 

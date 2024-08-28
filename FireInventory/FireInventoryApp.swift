@@ -16,15 +16,17 @@ struct FireInventoryApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .background(Color.appBackgroundColor)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    print("Configured Firebase!")
-    return true
-  }
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        print("Configured Firebase!")
+        return true
+    }
 }

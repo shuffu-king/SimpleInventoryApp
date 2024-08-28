@@ -11,10 +11,10 @@ struct ItemTransferView: View {
     
     @ObservedObject var viewModel: SitesViewModel
     let site: Site
-    @Binding var isPresented: Bool
+    @Binding var transferPresented: Bool
     @State private var selectedItemID: String = ""
     @State private var transferQuantity: Int = 1
-    @State private var selectedSiteID: String = ""
+    @State private var selectedSite: Site? = nil
     @State private var availableSites: [Site] = []
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -26,7 +26,7 @@ struct ItemTransferView: View {
                 Section("Select Item") {
                     Picker("Item", selection: $selectedItemID) {
                         ForEach(site.items.keys.sorted(), id: \.self) { itemID in
-                            Text(viewModel.getItemName(by: itemID)).tag(itemID)
+                            Text(itemID).tag(itemID)
                         }
                     }
                 }
@@ -38,36 +38,38 @@ struct ItemTransferView: View {
                 }
                 
                 Section("Select Destination Site") {
-                    Picker("Site", selection: $selectedSiteID) {
+                    Picker("Site", selection: $selectedSite) {
                         ForEach(availableSites, id: \.id) { site in
-                            Text(site.name).tag(site.id)
+                            Text(site.name).tag(site as Site?)
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
                 }
             }
             .navigationTitle("Transfer Item")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Transfer") {
-                        Task {
-                            try await viewModel.transferItems(itemID: selectedItemID, quantity: transferQuantity, from: site.id, to: selectedSiteID, itemName: viewModel.getItemName(by: selectedItemID))
-                            isPresented = false
-                        }
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        isPresented = false
-                    }
-                }
-            }
             .task {
                 await loadAvailableSites()
             }
             .onAppear {
                 if selectedItemID.isEmpty, let firstItemId = site.items.keys.sorted().first {
                     selectedItemID = firstItemId
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Transfer") {
+                        Task {
+                            if let selectedSite = selectedSite {
+                                try await viewModel.transferItems(itemID: selectedItemID, quantity: transferQuantity, from: site, to: selectedSite, itemName: selectedItemID)
+                            }
+                        }
+                        transferPresented = false
+                    }
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        transferPresented = false
+                    }
                 }
             }
         }
@@ -77,6 +79,10 @@ struct ItemTransferView: View {
         do {
             let sites = try await SitesManager.shared.getAvailableSites(for: AuthenticationManager.shared.getCurrentUserId() ?? "unknown", excluding: site.id)
             availableSites = sites
+            
+            if let firstSite = availableSites.first {
+                selectedSite = firstSite
+            }
         } catch {
             alertMessage = "Failed to load sites: \(error.localizedDescription)"
             showAlert = true
@@ -85,5 +91,5 @@ struct ItemTransferView: View {
 }
 
 #Preview {
-    ItemTransferView(viewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), isPresented: .constant(true))
+    ItemTransferView(viewModel: SitesViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]), transferPresented: .constant(true))
 }

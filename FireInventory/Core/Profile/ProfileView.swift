@@ -14,7 +14,7 @@ final class ProfileViewModel: ObservableObject {
     
     func loadCurrentUser() async throws{
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-//        self.user = try await UserManager.shared.getUser(id: authDataResult.uid)
+        //        self.user = try await UserManager.shared.getUser(id: authDataResult.uid)
         self.user = try await UserManager.shared.getUser(id: authDataResult.uid)
         print(authDataResult)
     }
@@ -29,17 +29,25 @@ struct ProfileView: View {
     @Binding var showSignInView: Bool
     
     var body: some View {
-        List {
-            if let user = viewModel.user {
-                Text("UserId: \(user.id)")
-                
-                if let name = user.name {
-                    Text("Name: \(name)")
+        NavigationStack {
+            VStack(spacing: 20) {
+                if let user = viewModel.user {
+                    if let name = user.name {
+                        ProfileRowView(title: "Name", value: name)
+                    }
+                    
+                    if let email = user.email {
+                        ProfileRowView(title: "Email", value: email)
+                    }
+                } else {
+                    ProgressView()
                 }
+                Spacer()
+                
             }
-            
-            
-            
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.appBackgroundColor.edgesIgnoringSafeArea(.all))
         }
         .task{
             try? await viewModel.loadCurrentUser()
@@ -53,10 +61,26 @@ struct ProfileView: View {
                     Image(systemName: "gear")
                         .font(.headline)
                 }
-                
-            
-            }
+                            }
         }
+    }
+}
+
+struct ProfileRowView: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text("\(title):")
+                .font(.headline)
+                .foregroundStyle(Color.offWhite)
+            Spacer()
+            Text(value)
+                .font(.subheadline)
+                .foregroundStyle(Color.offWhite.opacity(0.7))
+        }
+        .padding(.horizontal)
     }
 }
 

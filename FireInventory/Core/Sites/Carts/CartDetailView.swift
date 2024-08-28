@@ -11,41 +11,63 @@ struct CartDetailView: View {
     let cart: Cart
     @ObservedObject var viewModel: CartViewModel
     @StateObject var robotsViewModel = RobotsViewModel()
-    let siteId: String
+    @StateObject var sitesViewModel = SitesViewModel()
+    let site: Site
     
     @State private var selectedRobot: String? = nil
     @State private var selectedPosition: PartPosition = .TL
     
     @State private var selectedCart: Cart? = nil
     @State private var isSwapViewPresented = false
-//    @State private var isRobotDetailViewPresented = false
-//    @State private var robotForDetailView: Robot? = nil
+    @State private var changeWheelConfirmation = false
+    @State private var robotForDetailView: Robot? = nil
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 15) {
-                robotDetailView(position: .TL, serialNumber: cart.TLserialNumber)
-                robotDetailView(position: .TR, serialNumber: cart.TRserialNumber)
-                robotDetailView(position: .BL, serialNumber: cart.BLserialNumber)
-                robotDetailView(position: .BR, serialNumber: cart.BRserialNumber)
+            ZStack {
+                Color.appBackgroundColor.ignoresSafeArea()
+                
+                VStack(alignment: .leading, spacing: 15) {
+                    robotDetailView(position: .TL, serialNumber: cart.TLserialNumber)
+                    robotDetailView(position: .TR, serialNumber: cart.TRserialNumber)
+                    robotDetailView(position: .BL, serialNumber: cart.BLserialNumber)
+                    robotDetailView(position: .BR, serialNumber: cart.BRserialNumber)
+                }
             }
+            .background(Color.appBackgroundColor.ignoresSafeArea())
+            .toolbarBackground(Color.deepBlue, for: .navigationBar) // Set toolbar background
+            .toolbarBackground(.visible, for: .navigationBar)
             .font(.headline)
             .sheet(isPresented: $isSwapViewPresented) {
-                SwapRobotView(selectedRobot: $selectedRobot, position: $selectedPosition, isPresented: $isSwapViewPresented, cart: cart, viewModel: viewModel, siteId: siteId)
+                SwapRobotView(selectedRobot: $selectedRobot, position: $selectedPosition, isPresented: $isSwapViewPresented, cart: cart, viewModel: viewModel, site: site)
+                    .background(Color.appBackgroundColor.ignoresSafeArea())
             }
-//            .sheet(item: $robotForDetailView) { robot in
-//                    RobotDetailView(robot: robot, siteId: siteId, viewModel: robotsViewModel)
-//            }
+            .alert(isPresented: $changeWheelConfirmation){
+                Alert(
+                    title: Text("Replace Mecanum"),
+                    message: Text("Are you sure you want to replace this mecanum? This action cannot be undone."),
+                    primaryButton: .destructive(Text("Replace")) {
+                        Task {
+                            if let robot = robotForDetailView {
+                                try await robotsViewModel.changeRobotWheel(robot: robot, site: site)
+                                try await viewModel.getAllRobots(for: site.id)
+                                try await sitesViewModel.getAllItems()
+                            }
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
             .navigationTitle(cart.name)
             .padding()
             .onAppear {
                 Task {
-                    try? await viewModel.getAllRobots(for: siteId) // Refresh robots list on view appear
+                    try? await viewModel.getAllRobots(for: site.id) // Refresh robots list on view appear
                 }
             }
             .onChange(of: isSwapViewPresented) { _ in
                 Task {
-                    try? await viewModel.getAllRobots(for: siteId) // Refresh robots list after swap view is dismissed
+                    try? await viewModel.getAllRobots(for: site.id) // Refresh robots list after swap view is dismissed
                 }
             }
         }
@@ -60,8 +82,11 @@ struct CartDetailView: View {
             
             print(selectedPosition)
         } label: {
-            Image(systemName: "arrow.triangle.swap")
-                .foregroundColor(.blue)
+            Image(systemName: "arrow.left.arrow.right")
+                .foregroundColor(.neonGreen)
+                .padding()
+                .background(Color.deepBlue)
+                .cornerRadius(8)
         }
     }
     
@@ -70,17 +95,29 @@ struct CartDetailView: View {
             if let serialNumber = serialNumber, let robot = viewModel.getRobot(by: serialNumber) {
                 VStack(alignment: .leading) {
                     Text("\(position.rawValue): \(robot.serialNumber)")
-                    Text("(G\(robot.version.rawValue))")
-                        .opacity(0.5)
+                        .font(.headline)
+                        .foregroundColor(.offWhite)
+                    Text("G\(robot.version.rawValue)")
+                        .font(.subheadline)
+                        .foregroundColor(.offWhite)
+                        .opacity(0.7)
+                    Text("Mecanum last changed: \(robot.wheelInstallationDate?.formatted(date: .abbreviated, time: .shortened) ?? "None")")
+                        .font(.footnote)
+                        .foregroundColor(.offWhite)
+                        .opacity(0.4)
                 }
                 
                 Spacer()
                 
                 Button() {
-//                    robotForDetailView = robot
-//                    isRobotDetailViewPresented.toggle()
+                    robotForDetailView = robot
+                    changeWheelConfirmation.toggle()
                 } label: {
-                    Image(systemName: "transmission")
+                    Image(systemName: "circle.hexagonpath.fill")
+                        .foregroundColor(.neonGreen)
+                        .padding()
+                        .background(Color.deepBlue)
+                        .clipShape(Circle())
                 }
                 
                 robotSwapButton(robot: serialNumber, position: position, cart: cart)
@@ -89,9 +126,12 @@ struct CartDetailView: View {
                 Text("\(position.rawValue): None")
             }
         }
+        .padding()
+        .background(Color.deepBlue)
+        .cornerRadius(12)
     }
 }
 
     #Preview {
-        CartDetailView(cart: Cart(name: "test cart"), viewModel: CartViewModel(), robotsViewModel: RobotsViewModel(), siteId: "Asdgadgasd")
+        CartDetailView(cart: Cart(name: "test cart"), viewModel: CartViewModel(), robotsViewModel: RobotsViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
     }

@@ -17,36 +17,36 @@ class RobotManager {
     private let db = Firestore.firestore()
     private let robotsCollection = Firestore.firestore().collection("robots")
     private let transactionsCollection = Firestore.firestore().collection("transactions")
-    private let currentUser = AuthenticationManager.shared.getCurrentUserId() ?? "unknown"
+    private let currentUser = AuthenticationManager.shared.getCurrentUserEmail() ?? "unknown"
     
     func getAllRobots(for siteID: String) async throws -> [Robot] {
         let snapshot = try await robotsCollection.whereField("siteID", isEqualTo: siteID).getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Robot.self) }
     }
     
-    func addRobot(to siteID: String, robot: Robot) async throws {
+    func addRobot(to site: Site, robot: Robot) async throws {
         
         let documentRef = robotsCollection.document(robot.serialNumber)
         try documentRef.setData(from: robot)
         
-        let transactionRecord = Transaction(entityType: "robot", entityId: robot.serialNumber, siteId: siteID, action: "add", userId: currentUser)
+        let transactionRecord = Transaction(entityType: "robot", entityId: robot.serialNumber, siteId: site.name, action: "add", userId: currentUser)
         try transactionsCollection.addDocument(from: transactionRecord)
     }
     
-    func deleteRobot(from siteID: String, robotID: String) async throws {
+    func deleteRobot(from site: Site, robotID: String) async throws {
         
         let documentRef = robotsCollection.document(robotID)
         try await documentRef.delete()
         
-        let transactionRecord = Transaction(entityType: "robot", entityId: robotID, siteId: siteID, action: "delete", userId: currentUser)
+        let transactionRecord = Transaction(entityType: "robot", entityId: robotID, siteId: site.name, action: "delete", userId: currentUser)
         try  transactionsCollection.addDocument(from: transactionRecord)
     }
     
-    func updateRobot(_ robot: Robot, siteId: String) async throws {
-        let documentRef = robotsCollection.document(robot.id)
-        
+    func updateRobot(_ robot: Robot, site: Site) async throws {
+        let documentRef = robotsCollection.document(robot.serialNumber)
         try documentRef.setData(from: robot)
-        let transactionRecord = Transaction(entityType: "robot", entityId: robot.serialNumber, siteId: siteId, action: "health changed to \(robot.health.rawValue)", userId: currentUser)
+        
+        let transactionRecord = Transaction(entityType: "robot", entityId: robot.serialNumber, siteId: site.name, action: "update", userId: currentUser, notes:  "health changed to \(robot.health.rawValue)")
         try transactionsCollection.addDocument(from: transactionRecord)
     }
 }

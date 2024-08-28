@@ -13,22 +13,35 @@ struct SitesView: View {
     @State private var showAddView = false
     
     var body: some View {
-        List {
-            ForEach(viewModel.sites) { site in
-                
-                NavigationLink {
-                    SiteStockView(site: site, viewModel: viewModel)
-                } label: {
-                    VStack(alignment: .leading) {
-                        Text(site.name)
-                        Text(site.location)
-                            .opacity(0.7)
-                        Text("Site ID: \(site.id)")
-                            .opacity(0.4)
+        VStack {
+            ScrollView {
+                ForEach(viewModel.sites) { site in
+                    NavigationLink {
+                        SiteStockView(site: site, viewModel: viewModel)
+                    } label: {
+                        ZStack(alignment: .leading) {
+                            Color.deepBlue
+                                .cornerRadius(12)
+                            
+                            VStack(alignment: .leading) {
+                                Text(site.name)
+                                    .font(.headline)
+                                    .foregroundStyle(Color.offWhite)
+
+                                Text(site.location)
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.offWhite)
+                                    .opacity(0.7)
+                            }
+                            .padding()
+                        }
                     }
+                    .padding(.horizontal)
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(Color.appBackgroundColor))
         .navigationTitle("Sites")
         .task {
             try? await viewModel.getAllSites()

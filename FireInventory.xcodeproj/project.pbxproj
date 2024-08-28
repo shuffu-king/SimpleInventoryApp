@@ -48,6 +48,9 @@
 		3C7D3B392C6C238400083B7F /* ItemTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B382C6C238400083B7F /* ItemTransferView.swift */; };
 		3C7D3B3B2C6E4F2600083B7F /* DeletedItemUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */; };
 		3C7D3B3E2C6ECCFA00083B7F /* AddSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B3D2C6ECCFA00083B7F /* AddSiteView.swift */; };
+		3C7D3B422C75E9C400083B7F /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B412C75E9C400083B7F /* Assets.swift */; };
+		3C7D3B442C798CB800083B7F /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B432C798CB700083B7F /* ItemDetailView.swift */; };
+		3C7D3B462C7A6B3C00083B7F /* InUseItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B452C7A6B3C00083B7F /* InUseItemDetailView.swift */; };
 		3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */; };
 		3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC772C3EE073007BEDAA /* Assets.xcassets */; };
 		3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC7A2C3EE073007BEDAA /* Preview Assets.xcassets */; };
@@ -100,6 +103,9 @@
 		3C7D3B382C6C238400083B7F /* ItemTransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTransferView.swift; sourceTree = "<group>"; };
 		3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedItemUpdateView.swift; sourceTree = "<group>"; };
 		3C7D3B3D2C6ECCFA00083B7F /* AddSiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSiteView.swift; sourceTree = "<group>"; };
+		3C7D3B412C75E9C400083B7F /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		3C7D3B432C798CB700083B7F /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		3C7D3B452C7A6B3C00083B7F /* InUseItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InUseItemDetailView.swift; sourceTree = "<group>"; };
 		3CB2EC702C3EE06E007BEDAA /* FireInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireInventoryApp.swift; sourceTree = "<group>"; };
 		3CB2EC772C3EE073007BEDAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -226,18 +232,9 @@
 				3C7D3B3C2C6ECCDA00083B7F /* Main */,
 				3C7D3B332C6B840000083B7F /* Items */,
 				3C7D3B1C2C6AC2FB00083B7F /* Carts */,
-				3C213B612C4612E400804BC9 /* StockUpdate */,
 				3C7D3B162C6AC2DC00083B7F /* Robots */,
 			);
 			path = Sites;
-			sourceTree = "<group>";
-		};
-		3C213B612C4612E400804BC9 /* StockUpdate */ = {
-			isa = PBXGroup;
-			children = (
-				3C213B622C46130C00804BC9 /* StockUpdateView.swift */,
-			);
-			path = StockUpdate;
 			sourceTree = "<group>";
 		};
 		3C213B642C489D4D00804BC9 /* TapBar */ = {
@@ -260,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */,
+				3C7D3B412C75E9C400083B7F /* Assets.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -318,9 +316,12 @@
 		3C7D3B332C6B840000083B7F /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				3C7D3B452C7A6B3C00083B7F /* InUseItemDetailView.swift */,
 				3C7D3B342C6B840F00083B7F /* ItemsView.swift */,
 				3C7D3B382C6C238400083B7F /* ItemTransferView.swift */,
+				3C213B622C46130C00804BC9 /* StockUpdateView.swift */,
 				3C7D3B3A2C6E4F2600083B7F /* DeletedItemUpdateView.swift */,
+				3C7D3B432C798CB700083B7F /* ItemDetailView.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -491,13 +492,16 @@
 				3CB2EC8F2C3F0D96007BEDAA /* AuthenticationManager.swift in Sources */,
 				3C7D3B0E2C6AC0DC00083B7F /* Cart.swift in Sources */,
 				3C7D3B0B2C6AC06400083B7F /* Robot.swift in Sources */,
+				3C7D3B462C7A6B3C00083B7F /* InUseItemDetailView.swift in Sources */,
 				3C7D3B302C6ACD2400083B7F /* AddCartView.swift in Sources */,
 				3C7D3B112C6AC16F00083B7F /* RobotManager.swift in Sources */,
 				3C7D3B122C6AC16F00083B7F /* CartsManager.swift in Sources */,
+				3C7D3B442C798CB800083B7F /* ItemDetailView.swift in Sources */,
 				3C213B442C40CBC600804BC9 /* EmailSignInViewModel.swift in Sources */,
 				3CB2EC8D2C3F0955007BEDAA /* EmailSignInView.swift in Sources */,
 				3C213B4B2C40D26700804BC9 /* UserManager.swift in Sources */,
 				3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */,
+				3C7D3B422C75E9C400083B7F /* Assets.swift in Sources */,
 				3C213B542C42B2F900804BC9 /* ItemsManager.swift in Sources */,
 				3C213B402C40CB0600804BC9 /* SettingsViewModel.swift in Sources */,
 				3C7D3B2E2C6AC8F000083B7F /* SwapRobotView.swift in Sources */,
@@ -637,9 +641,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FireInventory/Preview Content\"";
+				DEVELOPMENT_TEAM = S8Q95J3VGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -665,9 +671,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FireInventory/Preview Content\"";
+				DEVELOPMENT_TEAM = S8Q95J3VGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

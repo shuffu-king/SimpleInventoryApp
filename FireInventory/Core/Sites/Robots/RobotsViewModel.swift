@@ -19,32 +19,30 @@ final class RobotsViewModel: ObservableObject {
         self.robots = try await RobotManager.shared.getAllRobots(for: siteID)
     }
     
-    func addRobot(to siteId: String, robot: Robot) async throws{
-        try await RobotManager.shared.addRobot(to: siteId, robot: robot)
-        try await SitesManager.shared.updateSiteRobots(siteID: siteId, robotID: robot.id, add: true)
-        try? await getAllRobots(for: siteId)
+    func addRobot(to site: Site, robot: Robot) async throws{
+        try await RobotManager.shared.addRobot(to: site, robot: robot)
+        try await SitesManager.shared.updateSiteRobots(siteID: site.id, robotID: robot.id, add: true)
+        try? await getAllRobots(for: site.id)
         
     }
     
-    func deleteRobot(from siteID: String, robotID: String) async throws {
-        try await RobotManager.shared.deleteRobot(from: siteID, robotID: robotID)
-        try await SitesManager.shared.updateSiteRobots(siteID: siteID, robotID: robotID, add: false)
-        try? await getAllRobots(for: siteID)
+    func deleteRobot(from site: Site, robotID: String) async throws {
+        try await RobotManager.shared.deleteRobot(from: site, robotID: robotID)
+        try await SitesManager.shared.updateSiteRobots(siteID: site.id, robotID: robotID, add: false)
+        try? await getAllRobots(for: site.id)
     }
     
-    func updateRobot(from siteId: String, robot: Robot) async throws{
-        try await RobotManager.shared.updateRobot(robot, siteId: siteId)
-        
+    func updateRobot(from site: Site, robot: Robot) async throws{
+        try await RobotManager.shared.updateRobot(robot, site: site)
     }
     
-    func siteRobotSwap(from currentSiteId: String, to newSiteId: String, robotID: String) async throws {
-        print("Swapping robot \(robotID) from \(currentSiteId) to \(newSiteId)")
-        try await SitesManager.shared.siteRobotSwap(robotID: robotID, from: currentSiteId, to: newSiteId)
-        
-//        // Reload data for both sites
-//        try await getAllRobots(for: currentSiteId)
-//        try await getAllRobots(for: newSiteId)
-//        
+    func siteRobotSwap(from currentSite: Site, to newSite: Site, robotID: String) async throws {
+        print("Swapping robot \(robotID) from \(currentSite.id) to \(newSite.id)")
+        try await SitesManager.shared.siteRobotSwap(robotID: robotID, from: currentSite, to: newSite)
+    }
+    
+    func changeRobotWheel(robot: Robot, site: Site) async throws {
+        try await SitesManager.shared.changeRobotWheel(robot: robot, site: site)
     }
     
     var filteredRobots: [Robot] {
@@ -56,6 +54,10 @@ final class RobotsViewModel: ObservableObject {
             
             return matchesPosition && matchesHealth && matchesVersion && matchesSearchText
         }
+    }
+    
+    func getCartForRobot(robotSerialNumber: String, siteId: String) async throws -> Cart? {
+        return try await CartsManager.shared.getCartForRobot(robotSerialNumber: robotSerialNumber, siteId: siteId)
     }
     
     

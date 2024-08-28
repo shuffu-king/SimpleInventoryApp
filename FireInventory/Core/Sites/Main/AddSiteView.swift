@@ -57,8 +57,8 @@ struct AddSiteView: View {
     func saveSite() async {
         do {
             let newSite = Site(id: UUID().uuidString, name: name, location: location,
-                               items: ["8ulZYXPpqlAnLXbMSklO": 0, "jWCcFyE1KIliXasXaNGQ": 0, "oGiIqglYV6uO3TGRpnh2": 0, "pKiuVeYcr8NTH3dJuFu7": 0],
-                               damagedItems: ["8ulZYXPpqlAnLXbMSklO": 0, "jWCcFyE1KIliXasXaNGQ": 0, "oGiIqglYV6uO3TGRpnh2": 0, "pKiuVeYcr8NTH3dJuFu7": 0],
+                               items: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0],
+                               damagedItems: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0], inUseItems: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0],
                                userIDs: [],
                                robotIDs: [])
             try await viewModel.addSite(newSite)

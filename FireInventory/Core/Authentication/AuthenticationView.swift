@@ -18,19 +18,23 @@ struct AuthenticationView: View {
             
             NavigationLink {
                 EmailSignInView(showSignInView: $showSignInView)
+                    .background(Color.appBackgroundColor)
+                    .edgesIgnoringSafeArea(.all)
             } label: {
                 Text("Sign In With Email")
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.deepBlue)
                     .frame(height: 55)
                     .frame(maxWidth: .infinity)
-                    .background(Color.black)
+                    .background(Color.neonGreen)
                     .cornerRadius(10)
             }
             Spacer()
         }
         .padding()
         .navigationTitle("ITA")
+        .background(Color.appBackgroundColor)
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

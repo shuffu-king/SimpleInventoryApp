@@ -9,11 +9,12 @@ import Foundation
 
 @MainActor
 final class SitesViewModel: ObservableObject {
-    
+    @Published var transactions: [Transaction] = []
     @Published private(set) var sites: [Site] = []
     @Published private(set) var items: [Item] = []
     @Published private(set) var damagedItems: [Item] = []
     @Published private(set) var robots: [Robot] = []
+    
     @Published var currentUser = AuthenticationManager.shared.getCurrentUserId() ?? "unknown"
     
     func getAllSites() async throws {
@@ -29,9 +30,9 @@ final class SitesViewModel: ObservableObject {
         try await getAllSites()
     }
     
-    func deleteSite(_ siteId: String) async throws {
-        try await SitesManager.shared.deleteSite(siteId: siteId)
-        sites.removeAll { $0.id == siteId }
+    func deleteSite(_ site: Site) async throws {
+        try await SitesManager.shared.deleteSite(site: site)
+        sites.removeAll { $0.id == site.id }
     }
     
     func getAllItems() async throws {
@@ -43,9 +44,9 @@ final class SitesViewModel: ObservableObject {
         return items.first { $0.id == id }?.itemName ?? "Unknown Item"
     }
     
-    func updateItemQuantity(siteId: String, itemId: String, change: Int, type: String, notes: String, userId: String, isDamaged: Bool = false){
-        guard let userID = AuthenticationManager.shared.getCurrentUserId() else { return }
-        guard let siteIndex = sites.firstIndex(where: {$0.id == siteId}) else { return }
+    func updateItemQuantity(site: Site, itemId: String, change: Int, type: String, notes: String, userId: String, isDamaged: Bool = false){
+        guard let userID = AuthenticationManager.shared.getCurrentUserEmail() else { return }
+        guard let siteIndex = sites.firstIndex(where: {$0.id == site.id}) else { return }
         
         if isDamaged {
             if var currentQuantity = sites[siteIndex].damagedItems[itemId] {
@@ -54,24 +55,84 @@ final class SitesViewModel: ObservableObject {
             } else {
                 sites[siteIndex].damagedItems[itemId] = max(0, change)
             }
-        } else {
-            if var currentQuantity = sites[siteIndex].items[itemId] {
-                currentQuantity = max(0, currentQuantity + change)
-                sites[siteIndex].items[itemId] = currentQuantity
+            
+            if var availableQuantity = sites[siteIndex].items[itemId] {
+                availableQuantity = max(0, availableQuantity - change)
+                sites[siteIndex].items[itemId] = availableQuantity
             } else {
                 sites[siteIndex].items[itemId] = max(0, change)
+            }
+            
+        } else {
+            if type == "Add" {
+                if var currentQuantity = sites[siteIndex].items[itemId] {
+                    currentQuantity = max(0, currentQuantity + change)
+                    sites[siteIndex].items[itemId] = currentQuantity
+                } else {
+                    sites[siteIndex].items[itemId] = max(0, change)
+                }
             }
         }
         
         Task {
-            try await SitesManager.shared.updateSiteItemQuantity(siteId: siteId, itemId: itemId, quantity: change, isDamaged: isDamaged)
-            let transactionRecord = Transaction(entityType: isDamaged ? "damaged item" : "item" , entityId: itemId, siteId: siteId, action: type, userId: userID, notes: notes)
+            try await SitesManager.shared.updateSiteItemQuantity(siteId: site.id, itemId: itemId, quantity: change, isDamaged: isDamaged)
+            let transactionRecord = Transaction(entityType: isDamaged ? "damaged item" : "item" , entityId: itemId, siteId: site.name, action: type, userId: userID, notes: notes)
             try await SitesManager.shared.addTransaction(transactionRecord)
         }
     }
     
-    func transferItems(itemID: String, quantity: Int, from currentSiteId: String, to newSiteId: String, itemName: String) async throws {
-        try await SitesManager.shared.transferItem(itemID: itemID, quantity: quantity, from: currentSiteId, to: newSiteId, itemName: itemName)
-        try await getAllItems()
+    func updateInUseItemQuantity(site: Site, itemId: String, change: Int, type: String, notes: String, userId: String) async throws {
+        guard let userID = AuthenticationManager.shared.getCurrentUserEmail() else { return }
+        guard let siteIndex = sites.firstIndex(where: {$0.id == site.id}) else { return }
+        
+        if var currentQuantity = sites[siteIndex].inUseItems[itemId] {
+            currentQuantity =  type == "Add" ? max(0, currentQuantity + change) : max(0, currentQuantity - change)
+            sites[siteIndex].inUseItems[itemId] = currentQuantity
+        } else {
+            sites[siteIndex].inUseItems[itemId] = max(0, change)
+        }
+        
+        if type == "Add" {
+            if var availableQuantity = sites[siteIndex].items[itemId] {
+                availableQuantity = max(0, availableQuantity - change)
+                sites[siteIndex].items[itemId] = availableQuantity
+            } else {
+                sites[siteIndex].items[itemId] = max(0, change)
+            }
+            
+        } else if type == "Remove"{
+            if var damagedQuantity = sites[siteIndex].damagedItems[itemId] {
+                damagedQuantity = max(0, damagedQuantity + change)
+                sites[siteIndex].damagedItems[itemId] = damagedQuantity
+            } else {
+                sites[siteIndex].damagedItems[itemId] = max(0, change)
+            }
+        }
+        
+        Task {
+            try await SitesManager.shared.updateSiteInUseItemQuantity(siteId: site.id, itemId: itemId, quantity: type == "Add" ? change : -change)
+            try await SitesManager.shared.updateSiteItemQuantity(siteId: site.id, itemId: itemId, quantity: type == "Add" ? -change : change, isDamaged: type == "Add" ? false : true)
+            let transactionRecord = Transaction(entityType: "in-use item" , entityId: itemId, siteId: site.name, action: type, userId: userID, notes: notes)
+            try await SitesManager.shared.addTransaction(transactionRecord)
+            
+        }
+    }
+    
+    func transferItems(itemID: String, quantity: Int, from currentSite: Site, to newSite: Site, itemName: String) async throws {
+        try await SitesManager.shared.transferItem(itemID: itemID, quantity: quantity, from: currentSite, to: newSite, itemName: itemName)
+        let refreshedSite = try await SitesManager.shared.refreshAllItems(for: newSite.id)
+        if let siteIndex = sites.firstIndex(where: { $0.id == refreshedSite.id}) {
+            sites[siteIndex] = refreshedSite
+        }
+        
+    }
+    
+    func fetchTransactions(for siteId: String) async throws {
+        var fetchedTransactions = try await SitesManager.shared.getTransactions(for: siteId)
+        
+        fetchedTransactions.sort { $0.timestamp.dateValue() > $1.timestamp.dateValue() }
+        DispatchQueue.main.async {
+            self.transactions = fetchedTransactions
+        }
     }
 }

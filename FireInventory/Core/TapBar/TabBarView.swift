@@ -28,6 +28,7 @@ struct TabBarView: View {
                 Image(systemName: "person")
                 Text("Profile")
             }
+            
         }
 
     }

@@ -20,9 +20,12 @@ struct AddRobotView: View {
     @Binding var showAddRobotView: Bool
     
     var body: some View {
-        Form{
-            Section(header: Text("Add new Robot")) {
-                TextField("New Robot SN", text: $newRobotSN)
+        Form {
+            Section(header: Text("Add new Wheel")
+                .font(.headline)
+                .foregroundColor(.neonGreen)
+            ) {
+                TextField("New Wheel SN", text: $newRobotSN)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textInputAutocapitalization(.characters)
                     .padding(.vertical, 5)
@@ -32,50 +35,58 @@ struct AddRobotView: View {
                 
                 if let errorMessage = errorMessage {
                     Text(errorMessage)
-                        .foregroundStyle(.red)
+                        .foregroundColor(.red)
                         .font(.footnote)
                 }
-                              
-                Button {
+                
+                Button(action: {
                     if !showScanner {
                         showScanner = true
                     }
-                } label: {
+                }) {
                     HStack {
                         Image(systemName: "qrcode.viewfinder")
                         Text("Scan QR Code")
                     }
+                    .padding()
+                    .background(Color.neonGreen)
+                    .foregroundColor(.deepBlue)
+                    .cornerRadius(10)
                 }
                 
-                
-                Picker("Robot Position", selection: $newRobotPosition) {
+                Picker("Wheel Position", selection: $newRobotPosition) {
                     ForEach(PartPosition.allCases, id: \.self) { position in
                         Text(position.rawValue).tag(position)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
                 .padding(.vertical, 5)
+                .foregroundStyle(Color.offWhite)
                 
-                Picker("Robot Version", selection: $newRobotVersion) {
+                
+                Picker("Wheel Version", selection: $newRobotVersion) {
                     ForEach(RobotVersion.allCases, id: \.self) { version in
                         Text(version.rawValue).tag(version)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
                 .padding(.vertical, 5)
+                .foregroundStyle(Color.offWhite)
                 
-                Picker("Robot Health", selection: $newRobotHealth) {
+                
+                Picker("Wheel Health", selection: $newRobotHealth) {
                     ForEach(RobotHealth.allCases, id: \.self) { health in
                         Text(health.rawValue).tag(health)
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
                 .padding(.vertical, 5)
+                .foregroundStyle(Color.offWhite)
                 
-                Button("Add Robot") {
+                Button("Add Wheel") {
                     Task {
                         let newRobot = Robot(serialNumber: newRobotSN, position: newRobotPosition, version: newRobotVersion, health: newRobotHealth, siteID: site.id)
-                        try await viewModel.addRobot(to: site.id, robot: newRobot)
+                        try await viewModel.addRobot(to: site, robot: newRobot)
                         newRobotSN = ""
                         newRobotPosition = .TL
                         newRobotVersion = .G22
@@ -86,11 +97,13 @@ struct AddRobotView: View {
                 .disabled(errorMessage != nil || newRobotSN.isEmpty)
                 .buttonStyle(PrimaryButtonStyle())
             }
-            .navigationTitle("Add Robot")
-            .sheet(isPresented: $showScanner) {
-                QRScannerView(scannedSN: $newRobotSN)
-            }
+            .listRowBackground(Color.appBackgroundColor)
         }
+        .sheet(isPresented: $showScanner) {
+            QRScannerView(scannedSN: $newRobotSN)
+                .background(Color.appBackgroundColor)
+        }
+        .background(Color.appBackgroundColor.ignoresSafeArea())
     }
     
     private func validateSerialNumber() {
@@ -106,5 +119,5 @@ struct AddRobotView: View {
 }
 
 #Preview {
-    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["gagflksjflo"]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
+    AddRobotView(site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["gagflksjflo"]), viewModel: RobotsViewModel(), showAddRobotView: .constant(false))
 }
