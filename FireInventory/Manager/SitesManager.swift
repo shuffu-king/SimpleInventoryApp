@@ -93,26 +93,17 @@ final class SitesManager {
     
     func updateSiteRobots(siteID: String, robotID: String, add: Bool) async throws {
         let siteRef = sitesCollection.document(siteID)
-        try await db.runTransaction { transaction, errorPointer -> Any? in
-            do {
-                let siteDocument = try transaction.getDocument(siteRef)
-                guard var site = try siteDocument.data(as: Site?.self) else {
-                    return nil
-                }
+                let field = "robotIDs"
                 
                 if add {
-                    site.robotIDs.append(robotID)
+                    try await siteRef.updateData([
+                        field: FieldValue.arrayUnion([robotID])
+                    ])
                 } else {
-                    site.robotIDs.removeAll { $0 == robotID }
+                    try await siteRef.updateData([
+                        field: FieldValue.arrayRemove([robotID])
+                    ])
                 }
-                
-                try transaction.setData(from: site, forDocument: siteRef)
-                return nil
-            } catch {
-                errorPointer?.pointee = error as NSError
-                return nil
-            }
-        }
     }
     
     func addTransaction(_ transaction: Transaction) async throws {
@@ -180,13 +171,13 @@ final class SitesManager {
         try await currentSiteRef.updateData([
             "items.\(itemID)": FieldValue.increment(Int64(-quantity))
         ])
-        print("Removed \(quantity) of item \(itemID) from current site: \(currentSite.id)")
+        print("Removed \(quantity) of item \(itemID) from current site: \(currentSite.name)")
         
         // Add the specified quantity to the new site
         try await newSiteRef.updateData([
             "items.\(itemID)": FieldValue.increment(Int64(quantity))
         ])
-        print()
+        print("Added \(quantity) of item \(itemID) to new site: \(currentSite.name)")
         
         // Create a transaction record
         let transactionRecord = Transaction(entityType: "item", entityId: itemID, siteId: currentSite.name, action: "item transfer", userId: currentUser, quantity: quantity, notes: "Added \(quantity) of item \(itemName) to new site: \(newSite.name)", newSiteId: newSite.name)
@@ -213,7 +204,7 @@ final class SitesManager {
         }
         
         // Update the robot's last wheel change date and save the robot back to Firestore
-        let robotRef = Firestore.firestore().collection("robots").document(robot.id)
+        let robotRef = robotsCollection.document(robot.id)
         try await robotRef.updateData([
             "wheelInstallationDate": Date()
         ])
@@ -230,5 +221,23 @@ final class SitesManager {
         try await addTransaction(transactionRecord)
     }
     
+    func completeWheelRSOs(robot: Robot, site: Site) async throws {
+        
+        let robotRef = robotsCollection.document(robot.id)
+        try await robotRef.updateData([
+            "rsosFinished": true
+        ])
+        
+        let transactionRecord = Transaction(
+            entityType: "robot",
+            entityId: robot.id,
+            siteId: site.name,
+            action: "rsos complete",
+            userId: currentUser,
+            notes: "RSOs complete on robot \(robot.serialNumber)"
+        )
+        
+        try await addTransaction(transactionRecord)
+    }
     
 }

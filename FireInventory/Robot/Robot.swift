@@ -24,6 +24,8 @@ struct Robot: Identifiable, Codable, Hashable {
             }
         } // New property for wheel item
     var wheelInstallationDate: Date? // Track when the wheel was installed
+    var cartAssigned: String?
+    var rsosFinished: Bool?
 }
 
 enum PartPosition: String, Codable, CaseIterable, Hashable {

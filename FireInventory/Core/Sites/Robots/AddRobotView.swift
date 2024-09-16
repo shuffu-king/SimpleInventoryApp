@@ -11,6 +11,7 @@ struct AddRobotView: View {
     
     @State private var showScanner = false
     @State private var newRobotSN: String = ""
+    @State private var robotNotes: String = ""
     @State private var errorMessage: String? = nil
     @State private var newRobotPosition: PartPosition = .TL
     @State private var newRobotVersion: RobotVersion = .G22
@@ -83,16 +84,49 @@ struct AddRobotView: View {
                 .padding(.vertical, 5)
                 .foregroundStyle(Color.offWhite)
                 
+                if newRobotHealth == .damaged {
+                    Section(header: Text("Notes")
+                        .foregroundColor(.offWhite)) {
+                            TextEditor(text: $robotNotes)
+                                .frame(height: 100)
+                                .background(Color.deepBlue)
+                                .foregroundColor(.offWhite)
+                        }
+                        .listRowBackground(Color.deepBlue)
+                }
+                
                 Button("Add Wheel") {
                     Task {
-                        let newRobot = Robot(serialNumber: newRobotSN, position: newRobotPosition, version: newRobotVersion, health: newRobotHealth, siteID: site.id)
-                        try await viewModel.addRobot(to: site, robot: newRobot)
+                        do {
+                            let validatedSerialNumber = newRobotSN.uppercased()
+                            print(validatedSerialNumber)
+                            
+                            let robot = Robot(
+                                serialNumber: validatedSerialNumber,
+                                position: newRobotPosition,
+                                version: newRobotVersion,
+                                health: newRobotHealth,
+                                siteID: "",
+                                notes: robotNotes
+                            )
+                            
+                            try await viewModel.addRobot(to: site, robot: robot)
+                            
+                            showAddRobotView = false
+
+                            errorMessage = nil
+                        } catch let error as RobotError {
+                            errorMessage = error.localizedDescription
+                            return
+                        } catch {
+                            errorMessage = error.localizedDescription
+                            return
+                        }
                         newRobotSN = ""
                         newRobotPosition = .TL
                         newRobotVersion = .G22
                         newRobotHealth = .new
                     }
-                    showAddRobotView = false
                 }
                 .disabled(errorMessage != nil || newRobotSN.isEmpty)
                 .buttonStyle(PrimaryButtonStyle())

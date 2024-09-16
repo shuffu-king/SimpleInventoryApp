@@ -79,6 +79,12 @@ struct RobotDetailView: View {
                 }
                 .listRowBackground(Color.deepBlue)
                 
+                Section(header: Text("RSO complete").foregroundColor(.neonGreen)) {
+                    Text(robot.rsosFinished ?? false ? "Yes" : "No")
+                            .foregroundColor(.offWhite)
+                }
+                .listRowBackground(Color.deepBlue)
+                
                 Button(action: {
                     isSiteSwapRobotViewPresented = true
                 }) {

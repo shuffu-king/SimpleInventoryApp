@@ -24,6 +24,7 @@
 		3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B682C4B765F00804BC9 /* Transaction.swift */; };
 		3C213B6B2C4C472B00804BC9 /* SitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */; };
 		3C213B6F2C4C556700804BC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */; };
+		3C662B0B2C8209B900D0CA5B /* AddSetRobotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C662B0A2C8209B900D0CA5B /* AddSetRobotsView.swift */; };
 		3C7D3B072C6ABEB600083B7F /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */; };
 		3C7D3B0B2C6AC06400083B7F /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B092C6AC06400083B7F /* Robot.swift */; };
 		3C7D3B0E2C6AC0DC00083B7F /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B0C2C6AC0DC00083B7F /* Cart.swift */; };
@@ -62,6 +63,7 @@
 		3CB2EC8F2C3F0D96007BEDAA /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC8E2C3F0D96007BEDAA /* AuthenticationManager.swift */; };
 		3CB2EC912C3F877B007BEDAA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC902C3F877B007BEDAA /* RootView.swift */; };
 		3CB2EC952C3F89C6007BEDAA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC942C3F89C6007BEDAA /* SettingsView.swift */; };
+		3CF486752C889F3E00321C70 /* RobotError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF486742C889F3E00321C70 /* RobotError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,7 @@
 		3C213B682C4B765F00804BC9 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		3C213B6A2C4C472B00804BC9 /* SitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitesViewModel.swift; sourceTree = "<group>"; };
 		3C213B6E2C4C556700804BC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3C662B0A2C8209B900D0CA5B /* AddSetRobotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSetRobotsView.swift; sourceTree = "<group>"; };
 		3C7D3B052C6ABEB600083B7F /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
 		3C7D3B092C6AC06400083B7F /* Robot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
 		3C7D3B0C2C6AC0DC00083B7F /* Cart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
@@ -115,6 +118,7 @@
 		3CB2EC8E2C3F0D96007BEDAA /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		3CB2EC902C3F877B007BEDAA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		3CB2EC942C3F89C6007BEDAA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3CF486742C889F3E00321C70 /* RobotError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				3C7D3B092C6AC06400083B7F /* Robot.swift */,
+				3CF486742C889F3E00321C70 /* RobotError.swift */,
 			);
 			path = Robot;
 			sourceTree = "<group>";
@@ -286,6 +291,7 @@
 				3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */,
 				3C7D3B132C6AC2DC00083B7F /* AddRobotView.swift */,
 				3C7D3B142C6AC2DC00083B7F /* RobotsView.swift */,
+				3C662B0A2C8209B900D0CA5B /* AddSetRobotsView.swift */,
 				3C7D3B152C6AC2DC00083B7F /* RobotsViewModel.swift */,
 			);
 			path = Robots;
@@ -492,12 +498,14 @@
 				3CB2EC8F2C3F0D96007BEDAA /* AuthenticationManager.swift in Sources */,
 				3C7D3B0E2C6AC0DC00083B7F /* Cart.swift in Sources */,
 				3C7D3B0B2C6AC06400083B7F /* Robot.swift in Sources */,
+				3CF486752C889F3E00321C70 /* RobotError.swift in Sources */,
 				3C7D3B462C7A6B3C00083B7F /* InUseItemDetailView.swift in Sources */,
 				3C7D3B302C6ACD2400083B7F /* AddCartView.swift in Sources */,
 				3C7D3B112C6AC16F00083B7F /* RobotManager.swift in Sources */,
 				3C7D3B122C6AC16F00083B7F /* CartsManager.swift in Sources */,
 				3C7D3B442C798CB800083B7F /* ItemDetailView.swift in Sources */,
 				3C213B442C40CBC600804BC9 /* EmailSignInViewModel.swift in Sources */,
+				3C662B0B2C8209B900D0CA5B /* AddSetRobotsView.swift in Sources */,
 				3CB2EC8D2C3F0955007BEDAA /* EmailSignInView.swift in Sources */,
 				3C213B4B2C40D26700804BC9 /* UserManager.swift in Sources */,
 				3C213B692C4B765F00804BC9 /* Transaction.swift in Sources */,

@@ -12,6 +12,7 @@ struct RobotsView: View {
     @ObservedObject var viewModel = RobotsViewModel()
     @State private var showAddRobotView = false
     @State private var showScanner = false
+    @State private var showAddSetView = false
     
     var body: some View {
         VStack(alignment: .center) {
@@ -19,7 +20,7 @@ struct RobotsView: View {
                 TextField("Search by Serial Number", text: $viewModel.searchQuery)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
-                
+        
                 Button {
                     showScanner.toggle()
                 } label: {
@@ -44,7 +45,7 @@ struct RobotsView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal)
                 
-                HStack(spacing: 20) {
+                HStack(spacing: 5) {
                     Picker("Select Health", selection: $viewModel.selectedHealth) {
                         Text("Health").tag(RobotHealth?.none)
                         ForEach(RobotHealth.allCases, id: \.self) { health in
@@ -58,6 +59,14 @@ struct RobotsView: View {
                         ForEach(RobotVersion.allCases, id: \.self) { version in
                             Text(version.rawValue).tag(RobotVersion?.some(version))
                         }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    
+                    Picker("Select RSOs", selection: $viewModel.selectedRSOsCompleted) {
+                        // If RSOs, should show all robots
+                        Text("RSOs").tag(Bool?.none)
+                        Text("Yes").tag(Bool?.some(true))
+                        Text("No").tag(Bool?.some(false))
                     }
                     .pickerStyle(MenuPickerStyle())
                     
@@ -105,22 +114,40 @@ struct RobotsView: View {
                 .padding()
             }
             
-            // Add Robot Button
-            Button {
-                showAddRobotView = true
-            } label: {
-                HStack {
-                    Image(systemName: "plus")
-                    Text("Add Wheel")
+            HStack {
+                // Add Robot Button
+                Button {
+                    showAddRobotView = true
+                } label: {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Add Wheel")
+                    }
+                    .font(.headline)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
                 }
-                .font(.headline)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+                .padding(.vertical, 10)
+                
+                Button {
+                    showAddSetView.toggle()
+                } label: {
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Add Set (4)")
+                    }
+                    .font(.headline)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
+                    .background(Color.neonGreen)
+                    .foregroundColor(Color.deepBlue)
+                    .cornerRadius(10)
+                }
             }
-            .padding(.vertical, 10)
+            .padding()
         }
         .background(Color(Color.appBackgroundColor))
         .sheet(isPresented: $showAddRobotView) {
@@ -129,12 +156,14 @@ struct RobotsView: View {
                 AddRobotView(site: site, viewModel: viewModel, showAddRobotView: $showAddRobotView)
             }
         }
+        .sheet(isPresented: $showAddSetView){
+            AddSetRobotsView(site: site, viewModel: viewModel, showAddSetRobotView: $showAddSetView)
+        }
         .sheet(isPresented: $showScanner) {
             QRScannerView(scannedSN: $viewModel.searchQuery)
         }
         .task {
             try? await viewModel.getAllRobots(for: site.id)
-            print(viewModel.robots)
         }
         
     }

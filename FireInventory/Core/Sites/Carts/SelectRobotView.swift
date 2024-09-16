@@ -36,13 +36,14 @@ struct SelectRobotView: View {
                         TextField("Search by Serial Number", text: $searchQuery)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
-                        Button {
+                        Button { 
                             if !showScanner {
                                 showScanner = true
                             }
                         } label: {
                             HStack {
                                 Image(systemName: "qrcode.viewfinder")
+                                    .foregroundStyle(Color.neonGreen)
                             }
                         }
                     }
@@ -84,10 +85,13 @@ struct SelectRobotView: View {
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(robot.serialNumber)
+                                        .foregroundStyle(Color.offWhite)
                                         .font(.headline)
                                     Text(robot.health.rawValue)
+                                        .foregroundStyle(Color.offWhite)
                                         .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                                     Text("G\(robot.version.rawValue)")
+                                        .foregroundStyle(Color.offWhite)
                                         .opacity(0.4)
                                     
                                 }
@@ -99,10 +103,17 @@ struct SelectRobotView: View {
                             }
                         }
                     }
+                    .listRowBackground(Color.deepBlue)
                 }
             }
+            .frame(maxHeight: .infinity)
+            .background(Color.appBackgroundColor)
             .navigationTitle("Select \(position.rawValue)")
+            .sheet(isPresented: $showScanner) {
+                QRScannerView(scannedSN: $searchQuery)
+            }
         }
+        .background(Color.appBackgroundColor).ignoresSafeArea()
         .padding()
     }
 }

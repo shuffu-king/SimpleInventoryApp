@@ -12,6 +12,7 @@ struct AddSiteView: View {
     @ObservedObject var viewModel: SitesViewModel
     @Binding var showAddView: Bool
     
+    @State private var id = ""
     @State private var name = ""
     @State private var location = ""
     @State private var errorMessage: String?
@@ -20,12 +21,13 @@ struct AddSiteView: View {
         NavigationStack {
             Form {
                 Section("Site details") {
+                    TextField("Site ID (Optional)", text: $id)
                     TextField("Site Name", text: $name)
                         .autocapitalization(.words)
                     TextField("Site Location", text: $location)
                         .autocapitalization(.words)
                 }
-                
+
                 if let errorMessage = errorMessage {
                     Section {
                         Text(errorMessage)
@@ -48,7 +50,6 @@ struct AddSiteView: View {
                         showAddView = false
                     }
                 }
-                
             }
         }
         
@@ -56,7 +57,7 @@ struct AddSiteView: View {
     
     func saveSite() async {
         do {
-            let newSite = Site(id: UUID().uuidString, name: name, location: location,
+            let newSite = Site(id: id.isEmpty ? name : id, name: name, location: location,
                                items: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0],
                                damagedItems: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0], inUseItems: ["Mecanum-TL-BR": 0, "Mecanum-TR-BL": 0, "Battery Charger": 0, "Charging station": 0],
                                userIDs: [],

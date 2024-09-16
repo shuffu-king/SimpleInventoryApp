@@ -195,7 +195,6 @@ struct ItemDetailView: View {
                             try await viewModel.transferItems(itemID: itemID, quantity: quantity, from: site, to: selectedSite, itemName: itemID)
                         }
                     }
-                    quantity = 0
                 },
                 secondaryButton: .cancel()
             )
