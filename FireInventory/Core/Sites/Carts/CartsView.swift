@@ -34,10 +34,9 @@ struct CartsView: View {
                     Task {
                         if let index = IndexSet.first {
                             let cart = viewModel.carts[index]
-                            try await viewModel.deleteCart(for: site, cartId: cart.id)
+                            try await viewModel.deleteCart(for: site, cart: cart)
                         }
                     }
-                    
                 }
             }
             .background(Color(Color.appBackgroundColor))

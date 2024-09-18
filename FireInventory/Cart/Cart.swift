@@ -8,7 +8,7 @@
 import Foundation
 
 struct Cart: Identifiable, Codable {
-    var id: String { name }
+    var id: String
     var name: String
     var TLserialNumber: String?
     var TRserialNumber: String?

@@ -19,6 +19,7 @@ struct CartDetailView: View {
     
     @State private var selectedCart: Cart? = nil
     @State private var isSwapViewPresented = false
+    @State private var editCartNamePresented = false
     @State private var changeWheelConfirmation = false
     @State private var robotForDetailView: Robot? = nil
     
@@ -41,6 +42,9 @@ struct CartDetailView: View {
             .sheet(isPresented: $isSwapViewPresented) {
                 SwapRobotView(selectedRobot: $selectedRobot, position: $selectedPosition, isPresented: $isSwapViewPresented, cart: cart, viewModel: viewModel, site: site)
                     .background(Color.appBackgroundColor.ignoresSafeArea())
+            }
+            .sheet(isPresented: $editCartNamePresented){
+                EditCartNameView(site: site, cart: cart, viewModel: viewModel)
             }
             .alert(isPresented: $changeWheelConfirmation){
                 Alert(
@@ -68,6 +72,11 @@ struct CartDetailView: View {
             .onChange(of: isSwapViewPresented) { _ in
                 Task {
                     try? await viewModel.getAllRobots(for: site.id) // Refresh robots list after swap view is dismissed
+                }
+            }
+            .toolbar {
+                Button("Edit Name") {
+                    editCartNamePresented.toggle()
                 }
             }
         }
@@ -133,5 +142,5 @@ struct CartDetailView: View {
 }
 
     #Preview {
-        CartDetailView(cart: Cart(name: "test cart"), viewModel: CartViewModel(), robotsViewModel: RobotsViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
+        CartDetailView(cart: Cart(id: "bgsjgbnls", name: "test cart"), viewModel: CartViewModel(), robotsViewModel: RobotsViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
     }

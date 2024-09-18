@@ -99,6 +99,7 @@ struct AddCartView: View {
                             
                             if !cartName.isEmpty {
                                 let newCart = Cart(
+                                    id: UUID().uuidString,
                                     name: cartName,
                                     TLserialNumber: selectedTopLeft?.serialNumber,
                                     TRserialNumber: selectedTopRight?.serialNumber,

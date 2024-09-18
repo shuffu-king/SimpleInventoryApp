@@ -52,6 +52,7 @@
 		3C7D3B422C75E9C400083B7F /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B412C75E9C400083B7F /* Assets.swift */; };
 		3C7D3B442C798CB800083B7F /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B432C798CB700083B7F /* ItemDetailView.swift */; };
 		3C7D3B462C7A6B3C00083B7F /* InUseItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B452C7A6B3C00083B7F /* InUseItemDetailView.swift */; };
+		3C84FBC52C98CA4700122DFC /* EditCartNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C84FBC42C98CA4700122DFC /* EditCartNameView.swift */; };
 		3CB2EC742C3EE06E007BEDAA /* FireInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */; };
 		3CB2EC782C3EE073007BEDAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC772C3EE073007BEDAA /* Assets.xcassets */; };
 		3CB2EC7B2C3EE073007BEDAA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB2EC7A2C3EE073007BEDAA /* Preview Assets.xcassets */; };
@@ -109,6 +110,7 @@
 		3C7D3B412C75E9C400083B7F /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		3C7D3B432C798CB700083B7F /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		3C7D3B452C7A6B3C00083B7F /* InUseItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InUseItemDetailView.swift; sourceTree = "<group>"; };
+		3C84FBC42C98CA4700122DFC /* EditCartNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCartNameView.swift; sourceTree = "<group>"; };
 		3CB2EC702C3EE06E007BEDAA /* FireInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB2EC732C3EE06E007BEDAA /* FireInventoryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireInventoryApp.swift; sourceTree = "<group>"; };
 		3CB2EC772C3EE073007BEDAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				3C7D3B312C6ACE9F00083B7F /* SelectRobotView.swift */,
 				3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */,
 				3C7D3B262C6AC52100083B7F /* CartDetailView.swift */,
+				3C84FBC42C98CA4700122DFC /* EditCartNameView.swift */,
 				3C7D3B1A2C6AC2FB00083B7F /* CartsView.swift */,
 				3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */,
 			);
@@ -487,6 +490,7 @@
 				3C7D3B392C6C238400083B7F /* ItemTransferView.swift in Sources */,
 				3C7D3B172C6AC2DC00083B7F /* AddRobotView.swift in Sources */,
 				3C7D3B3E2C6ECCFA00083B7F /* AddSiteView.swift in Sources */,
+				3C84FBC52C98CA4700122DFC /* EditCartNameView.swift in Sources */,
 				3C213B4F2C41B06C00804BC9 /* Items.swift in Sources */,
 				3CB2EC912C3F877B007BEDAA /* RootView.swift in Sources */,
 				3C7D3B1D2C6AC2FB00083B7F /* CartsView.swift in Sources */,

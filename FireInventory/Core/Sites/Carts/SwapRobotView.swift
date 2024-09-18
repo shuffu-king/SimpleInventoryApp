@@ -139,5 +139,5 @@ struct SwapRobotView: View {
 }
 
 #Preview {
-    SwapRobotView(selectedRobot: .constant("fdkngs;klm"), position: .constant(.BL), isPresented: .constant(false), cart: Cart(name: "rgnmrl;f"), viewModel: CartViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
+    SwapRobotView(selectedRobot: .constant("fdkngs;klm"), position: .constant(.BL), isPresented: .constant(false), cart: Cart(id: "ngklnrsglk", name: "rgnmrl;f"), viewModel: CartViewModel(), site: Site(id: "test", name: "test name", location: "test local", items: ["test" : 1], damagedItems: ["test" : 2], inUseItems: ["test" : 2], userIDs: ["test_users"], robotIDs: ["test_ids"]))
 }

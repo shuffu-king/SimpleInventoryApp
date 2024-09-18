@@ -37,25 +37,25 @@ final class CartViewModel: ObservableObject {
             print("Error adding cart: \(error.localizedDescription)")
         }    }
     
-    func deleteCart(for site: Site, cartId: String) async throws {
+    func deleteCart(for site: Site, cart: Cart) async throws {
         do {
-            try await CartsManager.shared.deleteCart(named: cartId, from: site)
+            try await CartsManager.shared.deleteCart(cart, from: site)
             try await getAllCarts(for: site.id)
         } catch {
             print("Error deleting cart: \(error.localizedDescription)")
         }    }
     
-    func updateCart(for siteId: String, cart: Cart) async throws {
+    func updateCart(for site: Site, cart: Cart) async throws {
         do {
-            try await CartsManager.shared.updateCart(cart, in: siteId)
-            try await getAllCarts(for: siteId)
+            try await CartsManager.shared.updateCart(cart, in: site)
+            try await getAllCarts(for: site.id)
         } catch {
             print("Error updating cart: \(error.localizedDescription)")
         }
     }
     
     func swapRobot(in cart: Cart, for position: PartPosition, with newRobotSN: String, from site: Site, notes: String?) async throws{
-
+        
         do {
             try await CartsManager.shared.swapRobot(in: cart, at: position, with: newRobotSN, for: site, notes: notes)
             try await getAllCarts(for: site.id)
@@ -70,12 +70,12 @@ final class CartViewModel: ObservableObject {
     
     func getAvailableRobots(for position: PartPosition, currentRobotSerial: String?) -> [Robot] {
         
-//        guard let currentRobotSerial = currentRobotSerial,
-//              let currentRobot = getRobot(by: currentRobotSerial) else {
-//                return []
-//        }
+        //        guard let currentRobotSerial = currentRobotSerial,
+        //              let currentRobot = getRobot(by: currentRobotSerial) else {
+        //                return []
+        //        }
         let currentRobotVersion = robots.first { $0.serialNumber == currentRobotSerial }?.version
-
+        
         let assignedRobotSerialNumbers = Set(carts.flatMap { [$0.TLserialNumber, $0.TRserialNumber, $0.BLserialNumber, $0.BRserialNumber] })
         return robots.filter { robot in
             (currentRobotVersion == nil || robot.version == currentRobotVersion) &&
@@ -86,6 +86,15 @@ final class CartViewModel: ObservableObject {
     }
     
     func getRobot(by serialNumber: String) -> Robot? {
-            return robots.first { $0.serialNumber == serialNumber }
+        return robots.first { $0.serialNumber == serialNumber }
+    }
+    
+    func updateCartName(cart: Cart, newName: String, site: Site) async throws {
+        do {
+            try await CartsManager.shared.updateCartName(cart: cart, newName: newName, site: site)
+            try await getAllCarts(for: site.id)
+        } catch {
+            print("Error updating cart: \(error.localizedDescription)")
         }
+    }
 }

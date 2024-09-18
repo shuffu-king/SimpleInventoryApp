@@ -14,8 +14,6 @@ struct RobotDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isSiteSwapRobotViewPresented = false
     @State private var isEditable = false
-    @State private var assignedCart: Cart?
-
     
     var body: some View {
         NavigationStack {
@@ -54,13 +52,8 @@ struct RobotDetailView: View {
                 .listRowBackground(Color.deepBlue)
                 
                 Section(header: Text("Cart Assigned").foregroundColor(.neonGreen)) {
-                    if let assignedCart = assignedCart {
-                        Text(assignedCart.name)
+                    Text(robot.cartAssigned ?? "No cart assigned")
                             .foregroundColor(.offWhite)
-                    } else {
-                        Text("Not assigned to any cart")
-                            .foregroundColor(.offWhite)
-                    }
                 }
                 .listRowBackground(Color.deepBlue)
                 
@@ -124,12 +117,6 @@ struct RobotDetailView: View {
             }
             .task {
                 try? await viewModel.getAllRobots(for: site.id)
-                
-                do {
-                    assignedCart = try await viewModel.getCartForRobot(robotSerialNumber: robot.serialNumber, siteId: site.id)
-                } catch {
-                    print("Failed to get assigned cart: \(error)")
-                }
             }
             .scrollContentBackground(.hidden)
         }
