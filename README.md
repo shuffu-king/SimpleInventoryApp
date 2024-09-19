@@ -1,6 +1,6 @@
 # Simple Inventory App
 
-This is nventory management application built with SwiftUI and Firebase. Users can sign up and log in with email and password, access various sites, and manage stock levels for items. Each user can view only the sites they are assigned to. Push and pull operations are tracked with transactions, which log the time, item, quantity, and user involved in each operation.
+This is inventory management application built with SwiftUI and Firebase. Users can sign up and log in with email and password, access various sites, and manage stock levels for items. Each user can view only the sites they are assigned to. Push and pull operations are tracked with transactions, which log the time, item, quantity, and user involved in each operation.
 
 ## Features
 - User Authentication with Firebase
@@ -49,6 +49,7 @@ This is nventory management application built with SwiftUI and Firebase. Users c
   - `SitesView`: Displays the list of sites the user has access to.
   - `SiteDetailView`: Displays details of a selected site, including its items and quantities.
   - `SiteStockView`: Allows users to push or pull stock for items at a site.
+
   - `StockUpdateView`: Provides UI for selecting an item and adjusting its quantity.
   - `ProfileView`: Displays user profile information.
   - `SettingsView`: Manages application settings.
@@ -57,3 +58,5 @@ This is nventory management application built with SwiftUI and Firebase. Users c
   - `UserManager`: Handles user authentication and management.
   - `ItemsManager`: Manages item-related operations.
   - `SitesManager`: Handles interactions with Firestore for fetching sites, updating item quantities, and logging transactions.
+
+![app](https://github.com/user-attachments/assets/5bddaf78-539a-4b68-8094-1da6e434912e)
