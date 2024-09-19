@@ -59,4 +59,3 @@ This is inventory management application built with SwiftUI and Firebase. Users 
   - `ItemsManager`: Manages item-related operations.
   - `SitesManager`: Handles interactions with Firestore for fetching sites, updating item quantities, and logging transactions.
 
-![app](https://github.com/user-attachments/assets/5bddaf78-539a-4b68-8094-1da6e434912e)
