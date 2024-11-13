@@ -24,28 +24,6 @@ class RobotManager {
         return snapshot.documents.compactMap { try? $0.data(as: Robot.self) }
     }
     
-    //    func addRobot(to site: Site, robot: Robot) async throws {
-    //
-    //        // Check if the robot already exists in the collection
-    //        let existingRobotSnapshot = try await robotsCollection.document(robot.serialNumber).getDocument()
-    //
-    //        if let existingRobot = try? existingRobotSnapshot.data(as: Robot.self) {
-    //            // If the robot exists and is already assigned to a site, return an error
-    //            if !existingRobot.siteID.isEmpty {
-    //                throw NSError(domain: "RobotManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "This robot is already assigned to a site."])
-    //            }
-    //        } else {
-    //
-    //            let documentRef = robotsCollection.document(robot.serialNumber)
-    //            try documentRef.setData(from: robot)
-    //
-    //
-    //            //Log transaction
-    //            let transactionRecord = Transaction(entityType: "robot", entityId: robot.serialNumber, siteId: site.name, action: "add", userId: currentUser)
-    //            try transactionsCollection.addDocument(from: transactionRecord)
-    //        }
-    //    }
-    
     func addRobot(to site: Site, robot: Robot) async throws {
         let documentRef = robotsCollection.document(robot.serialNumber)
         let existingRobotSnapshot = try await documentRef.getDocument()

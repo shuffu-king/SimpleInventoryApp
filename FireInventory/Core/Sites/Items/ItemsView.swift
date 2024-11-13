@@ -10,11 +10,6 @@ import SwiftUI
 struct ItemsView: View {
     let site: Site
     @ObservedObject var viewModel: SitesViewModel
-//    @ObservedObject private var stockUpdateViewModel = StockUpdateViewModel()
-//    @ObservedObject private var deletedItemUpdateViewModel = DeletedItemUpdateViewModel()
-//    @State private var showPopup = false
-//    @State private var transferPresented = false
-//    @State private var showDamagedPopup = false
     
     var totalAvailableItems: Int {
         site.items.values.reduce(0, +)

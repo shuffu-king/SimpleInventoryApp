@@ -16,8 +16,6 @@ struct RootView: View {
             if !showSignInView {
                 NavigationStack {
                     TabBarView(showSignInView: $showSignInView)
-//                    ItemsView()
-//                    SitesView()
                 }
             }
         }

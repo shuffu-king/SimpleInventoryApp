@@ -11,6 +11,8 @@ import FirebaseFirestoreSwift
 class CartsManager {
     
     static let shared = CartsManager()
+    private init() { }
+
     private let db = Firestore.firestore()
     private let transactionsCollection = Firestore.firestore().collection("transactions")
     private let currentUser = AuthenticationManager.shared.getCurrentUserEmail() ?? "unknown"
