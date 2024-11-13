@@ -37,7 +37,6 @@
 		3C7D3B1E2C6AC2FB00083B7F /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */; };
 		3C7D3B212C6AC39300083B7F /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B1F2C6AC39300083B7F /* PrimaryButtonStyle.swift */; };
 		3C7D3B232C6AC4DF00083B7F /* RobotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B222C6AC4DF00083B7F /* RobotDetailView.swift */; };
-		3C7D3B252C6AC4EB00083B7F /* CartRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */; };
 		3C7D3B272C6AC52100083B7F /* CartDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B262C6AC52100083B7F /* CartDetailView.swift */; };
 		3C7D3B292C6AC64E00083B7F /* EditRobotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */; };
 		3C7D3B2C2C6AC7C000083B7F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 3C7D3B2B2C6AC7C000083B7F /* CodeScanner */; };
@@ -96,7 +95,6 @@
 		3C7D3B1B2C6AC2FB00083B7F /* CartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		3C7D3B1F2C6AC39300083B7F /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
 		3C7D3B222C6AC4DF00083B7F /* RobotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotDetailView.swift; sourceTree = "<group>"; };
-		3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartRowView.swift; sourceTree = "<group>"; };
 		3C7D3B262C6AC52100083B7F /* CartDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartDetailView.swift; sourceTree = "<group>"; };
 		3C7D3B282C6AC64E00083B7F /* EditRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRobotView.swift; sourceTree = "<group>"; };
 		3C7D3B2D2C6AC8F000083B7F /* SwapRobotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapRobotView.swift; sourceTree = "<group>"; };
@@ -305,7 +303,6 @@
 				3C7D3B2F2C6ACD2400083B7F /* AddCartView.swift */,
 				3C7D3B2D2C6AC8F000083B7F /* SwapRobotView.swift */,
 				3C7D3B312C6ACE9F00083B7F /* SelectRobotView.swift */,
-				3C7D3B242C6AC4EB00083B7F /* CartRowView.swift */,
 				3C7D3B262C6AC52100083B7F /* CartDetailView.swift */,
 				3C84FBC42C98CA4700122DFC /* EditCartNameView.swift */,
 				3C7D3B1A2C6AC2FB00083B7F /* CartsView.swift */,
@@ -476,7 +473,6 @@
 			files = (
 				3C213B592C43307400804BC9 /* SitesManager.swift in Sources */,
 				3C213B6B2C4C472B00804BC9 /* SitesViewModel.swift in Sources */,
-				3C7D3B252C6AC4EB00083B7F /* CartRowView.swift in Sources */,
 				3CB2EC952C3F89C6007BEDAA /* SettingsView.swift in Sources */,
 				3C7D3B372C6BC2E100083B7F /* SiteRobotSwap.swift in Sources */,
 				3C213B472C40CC0200804BC9 /* ProfileView.swift in Sources */,
@@ -660,6 +656,8 @@
 				DEVELOPMENT_TEAM = S8Q95J3VGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FireInventory/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -690,6 +688,8 @@
 				DEVELOPMENT_TEAM = S8Q95J3VGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FireInventory/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

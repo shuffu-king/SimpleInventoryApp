@@ -17,6 +17,7 @@ struct SelectRobotView: View {
     @State private var showScanner = false
     @State private var selectedHealth: RobotHealth? = nil
     @State private var selectedVersion: RobotVersion? = nil
+    @State private var selectedRSOsCompleted: Bool? = nil
 
     var filteredRobots: [Robot] {
         availableRobots.filter { robot in
@@ -24,7 +25,10 @@ struct SelectRobotView: View {
             let matchesVersion = selectedVersion == nil || robot.version == selectedVersion
             let matchesSearchText = searchQuery.isEmpty || robot.serialNumber.lowercased().contains(searchQuery.lowercased())
             
-            return matchesHealth && matchesVersion && matchesSearchText
+            let isRsosFinished = robot.rsosFinished ?? false
+            let matchesRSOS = selectedRSOsCompleted == nil || isRsosFinished == selectedRSOsCompleted
+            
+            return matchesHealth && matchesVersion && matchesSearchText && matchesRSOS
         }
     }
     
@@ -32,7 +36,7 @@ struct SelectRobotView: View {
         NavigationStack {
             VStack {
                 Section {
-                    HStack {
+                    HStack{
                         TextField("Search by Serial Number", text: $searchQuery)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
@@ -67,6 +71,14 @@ struct SelectRobotView: View {
                                     Text(version.rawValue).tag(RobotVersion?.some(version))
                                     
                                 }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            
+                            Picker("Select RSOs", selection: $selectedRSOsCompleted) {
+                                // If RSOs, should show all robots
+                                Text("RSOs").tag(Bool?.none)
+                                Text("Yes").tag(Bool?.some(true))
+                                Text("No").tag(Bool?.some(false))
                             }
                             .pickerStyle(MenuPickerStyle())
                             
@@ -106,8 +118,6 @@ struct SelectRobotView: View {
                     .listRowBackground(Color.deepBlue)
                 }
             }
-            .frame(maxHeight: .infinity)
-            .background(Color.appBackgroundColor)
             .navigationTitle("Select \(position.rawValue)")
             .sheet(isPresented: $showScanner) {
                 QRScannerView(scannedSN: $searchQuery)

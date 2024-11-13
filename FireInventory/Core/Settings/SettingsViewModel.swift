@@ -25,4 +25,15 @@ final class SettingsViewModel: ObservableObject {
         try await AuthenticationManager.shared.resetPassword(email: email)
     }
     
+    func deleteUserAccount() async {
+        do {
+            if let userId = AuthenticationManager.shared.getCurrentUserId() {
+                try await UserManager.shared.deleteUser(id: userId)
+                print("User account deleted successfully.")
+            }
+        } catch {
+            print("Error deleting user account: \(error.localizedDescription)")
+        }
+    }
+    
 }

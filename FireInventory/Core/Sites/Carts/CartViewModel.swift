@@ -35,7 +35,8 @@ final class CartViewModel: ObservableObject {
             try await getAllCarts(for: site.id)
         } catch {
             print("Error adding cart: \(error.localizedDescription)")
-        }    }
+        }
+    }
     
     func deleteCart(for site: Site, cart: Cart) async throws {
         do {
@@ -74,11 +75,11 @@ final class CartViewModel: ObservableObject {
         //              let currentRobot = getRobot(by: currentRobotSerial) else {
         //                return []
         //        }
-        let currentRobotVersion = robots.first { $0.serialNumber == currentRobotSerial }?.version
+//        let currentRobotVersion = robots.first { $0.serialNumber == currentRobotSerial }?.version
         
         let assignedRobotSerialNumbers = Set(carts.flatMap { [$0.TLserialNumber, $0.TRserialNumber, $0.BLserialNumber, $0.BRserialNumber] })
         return robots.filter { robot in
-            (currentRobotVersion == nil || robot.version == currentRobotVersion) &&
+//            (currentRobotVersion == nil || robot.version == currentRobotVersion) &&
             robot.position == position &&
             (robot.health == .new || robot.health == .refurbished) &&
             !assignedRobotSerialNumbers.contains(robot.serialNumber)

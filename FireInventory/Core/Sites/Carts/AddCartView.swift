@@ -20,6 +20,7 @@ struct AddCartView: View {
     @State private var isSelectRobotPresented = false
     @State private var selectedPosition: PartPosition = .TL
     @State private var showAlert = false
+    @State private var showNameAlert = false
 
     var body: some View {
         NavigationStack {
@@ -96,24 +97,30 @@ struct AddCartView: View {
                         .listRowBackground(Color.deepBlue)
                         
                         Button("Create New Cart") {
-                            
-                            if !cartName.isEmpty {
-                                let newCart = Cart(
-                                    id: UUID().uuidString,
-                                    name: cartName,
-                                    TLserialNumber: selectedTopLeft?.serialNumber,
-                                    TRserialNumber: selectedTopRight?.serialNumber,
-                                    BLserialNumber: selectedBackLeft?.serialNumber,
-                                    BRserialNumber: selectedBackRight?.serialNumber
-                                )
-                                
-                                Task{
-                                    try await viewModel.addCart(for: site, cart: newCart)
-                                    presentationMode.wrappedValue.dismiss()
+                            print("Create New Cart button pressed")
+                            Task {
+                                    if !cartName.isEmpty {
+                                        let newCart = Cart(
+                                            id: UUID().uuidString,
+                                            name: cartName,
+                                            TLserialNumber: selectedTopLeft?.serialNumber,
+                                            TRserialNumber: selectedTopRight?.serialNumber,
+                                            BLserialNumber: selectedBackLeft?.serialNumber,
+                                            BRserialNumber: selectedBackRight?.serialNumber
+                                        )
+                                        
+                                        do {
+                                            try await viewModel.addCart(for: site, cart: newCart)
+                                            print("Cart added") // Check if this appears in console
+                                            presentationMode.wrappedValue.dismiss()
+                                        } catch {
+                                            print("Failed to add cart: \(error.localizedDescription)")
+                                            showNameAlert = true
+                                        }
+                                    } else {
+                                        showAlert.toggle()
+                                    }
                                 }
-                            } else {
-                                showAlert.toggle()
-                            }
                         }
                         .foregroundStyle(Color.offWhite)
                         .listRowBackground(Color.deepBlue)
@@ -143,6 +150,9 @@ struct AddCartView: View {
                 )
             }
             .alert("One or more fields missing", isPresented: $showAlert) {
+                Button("OK", role: .cancel){ }
+            }
+            .alert("Cart name already taken", isPresented: $showNameAlert) {
                 Button("OK", role: .cancel){ }
             }
         }

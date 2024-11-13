@@ -20,7 +20,7 @@ struct RobotsView: View {
                 TextField("Search by Serial Number", text: $viewModel.searchQuery)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
-        
+                
                 Button {
                     showScanner.toggle()
                 } label: {
@@ -45,7 +45,7 @@ struct RobotsView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal)
                 
-                HStack(spacing: 5) {
+                HStack(spacing: 0) {
                     Picker("Select Health", selection: $viewModel.selectedHealth) {
                         Text("Health").tag(RobotHealth?.none)
                         ForEach(RobotHealth.allCases, id: \.self) { health in
@@ -101,10 +101,16 @@ struct RobotsView: View {
                             }
                             
                             Spacer()
-                            
-                            Text(robot.health.rawValue)
-                                .font(.subheadline)
-                                .foregroundStyle(Color.offWhite)
+                            VStack(alignment: .trailing){
+                                Text(robot.health.rawValue)
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.offWhite)
+                                
+                                Text(robot.cartAssigned ?? "")
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.offWhite)
+                                    .opacity(0.7)
+                            }
                         }
                         .padding()
                         .background(Color.deepBlue)
@@ -149,6 +155,11 @@ struct RobotsView: View {
             }
             .padding()
         }
+        .onAppear {
+            Task {
+                try await viewModel.getAllRobots(for: site.id)
+            }
+        }
         .background(Color(Color.appBackgroundColor))
         .sheet(isPresented: $showAddRobotView) {
             ZStack {
@@ -162,10 +173,6 @@ struct RobotsView: View {
         .sheet(isPresented: $showScanner) {
             QRScannerView(scannedSN: $viewModel.searchQuery)
         }
-        .task {
-            try? await viewModel.getAllRobots(for: site.id)
-        }
-        
     }
 }
 

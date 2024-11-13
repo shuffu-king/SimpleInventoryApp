@@ -15,7 +15,7 @@ class CartsManager {
     private let transactionsCollection = Firestore.firestore().collection("transactions")
     private let currentUser = AuthenticationManager.shared.getCurrentUserEmail() ?? "unknown"
     
-    func  getCarts(for siteId: String) async throws -> [Cart] {
+    func getCarts(for siteId: String) async throws -> [Cart] {
         let cartsCollection = db.collection("sites").document(siteId).collection("carts")
         let snapshot = try await cartsCollection.getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Cart.self) }
@@ -23,19 +23,31 @@ class CartsManager {
     
     func addCart(_ cart: Cart, to site: Site) async throws {
         let cartsCollection = db.collection("sites").document(site.id).collection("carts")
-        try cartsCollection.document(cart.id).setData(from: cart)
         
-        let robotSerialNumbers = [cart.TLserialNumber, cart.TRserialNumber, cart.BLserialNumber, cart.BRserialNumber].compactMap { $0 }
+        print("Attempting to create a new cart document with ID: \(cart.id)")
         
-        for serialNumber in robotSerialNumbers {
-            let robotRef = db.collection("robots").document(serialNumber)
-            try await robotRef.updateData([
-                "cartAssigned": cart.name
-            ])
-        }
-        
-        let transactionRecord = Transaction(entityType: "cart", entityId: cart.name, siteId: site.name, action: "cart creation", userId: currentUser)
-        try transactionsCollection.addDocument(from: transactionRecord)
+        do {
+                try cartsCollection.document(cart.id).setData(from: cart)
+                print("Cart document successfully created.")
+                
+                let robotSerialNumbers = [cart.TLserialNumber, cart.TRserialNumber, cart.BLserialNumber, cart.BRserialNumber].compactMap { $0 }
+                
+                for serialNumber in robotSerialNumbers {
+                    let robotRef = db.collection("robots").document(serialNumber)
+                    try await robotRef.updateData([
+                        "cartAssigned": cart.name
+                    ])
+                    print("Updated robot \(serialNumber) with cart assignment.")
+                }
+                
+                let transactionRecord = Transaction(entityType: "cart", entityId: cart.name, siteId: site.name, action: "cart creation", userId: currentUser)
+                try transactionsCollection.addDocument(from: transactionRecord)
+                print("Transaction recorded successfully.")
+                
+            } catch {
+                print("Error creating cart: \(error)")
+                throw error
+            }
     }
     
     func updateCart(_ cart: Cart, in site: Site) async throws {

@@ -18,8 +18,6 @@ final class ProfileViewModel: ObservableObject {
         self.user = try await UserManager.shared.getUser(id: authDataResult.uid)
         print(authDataResult)
     }
-    
-    
 }
 
 

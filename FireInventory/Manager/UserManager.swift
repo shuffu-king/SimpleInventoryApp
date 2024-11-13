@@ -52,45 +52,15 @@ final class UserManager {
         try userDocument(userId: user.id).setData(from: user, merge: false, encoder: encoder)
     }
     
-//    func createNewUser(auth: AuthDataResultModel) async throws {
-//        var userData: [String:Any] = [
-//            "id": auth.uid,
-//            "date_created": Timestamp(),
-//        ]
-//        if let photoURL = auth.photoURL {
-//            userData["photo_url"] = photoURL
-//        }
-//        if let email = auth.email {
-//            userData["email"] = email
-//        }
-//        if let name = auth.name {
-//            userData["name"] = name
-//        }
-//        
-//        try await userDocument(userId: auth.uid).setData(userData, merge: false)
-//        
-//    }
-    
     func getUser(id: String) async throws -> DBUser {
         try await userDocument(userId: id).getDocument(as: DBUser.self)
     }
     
-    
-    
-//    func getUser(id: String) async throws  -> DBUser {
-//        let snapshot = try await userDocument(userId: id).getDocument()
-//        
-//        guard let data = snapshot.data(), let id = data["id"] as? String else {
-//            throw URLError(.badServerResponse)
-//        }
-//        
-//        
-//        let email = data["email"] as? String
-//        let name = data["name"] as? String
-//        let photoURL = data["photoURL"] as? String
-//        let dateCreated = data["date_created"] as? Date
-//        
-//        return DBUser(id: id, email: email, name: name, photoURL: photoURL, dateCreated: dateCreated)
-//    }
-    
+    func deleteUser(id: String) async throws {
+        // Delete Firestore document
+        try await userDocument(userId: id).delete()
+        
+        // Delete from Firebase Authentication
+        try await AuthenticationManager.shared.deleteCurrentUser()
+    }
 }

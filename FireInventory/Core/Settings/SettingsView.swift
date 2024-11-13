@@ -12,6 +12,7 @@ struct SettingsView: View {
     
     @StateObject private var viewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
+    @State private var confirmDelete = false
     
     var body: some View {
         List {
@@ -35,9 +36,21 @@ struct SettingsView: View {
                     }
                 }
             }
-            
+            Button("Delete User Account") {
+                confirmDelete.toggle()
+            }
         }
         .navigationTitle("Settings")
+        .alert("Are you sure you want to Delete Account", isPresented: $confirmDelete) {
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.deleteUserAccount()
+                    showSignInView = true
+                }
+            }
+            
+            Button("Cancel", role: .cancel) { }
+        }
     }
 }
 

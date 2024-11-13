@@ -11,6 +11,7 @@ struct EditCartNameView: View {
     let site: Site
     let cart: Cart
     @State private var newName = ""
+    @State private var showNameAlert = false
     @ObservedObject var viewModel: CartViewModel
     @Environment(\.presentationMode) var presentationMode
 
@@ -21,9 +22,13 @@ struct EditCartNameView: View {
         }
         
         Button {
-            Task {
-                try await viewModel.updateCartName(cart: cart, newName: newName, site: site)
-                presentationMode.wrappedValue.dismiss()
+            for newCart in viewModel.carts {
+                if newName != cart.name && !newName.isEmpty && newCart.id == cart.id {
+                    Task {
+                        try await viewModel.updateCartName(cart: newCart, newName: newName, site: site)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
             }
         } label: {
             HStack {
@@ -38,8 +43,12 @@ struct EditCartNameView: View {
         }
         .padding(.vertical, 10)
         
+        .alert("Cart name already taken", isPresented: $showNameAlert) {
+            Button("OK", role: .cancel){ }
+        }
         
     }
+    
 }
 
 #Preview {

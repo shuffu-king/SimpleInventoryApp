@@ -19,6 +19,25 @@ struct SwapRobotView: View {
     @State private var showAlert = false
     @State private var availableRobots: [Robot] = []
     
+    @State private var searchQuery = ""
+    @State private var showScanner = false
+    @State private var selectedHealth: RobotHealth? = nil
+    @State private var selectedVersion: RobotVersion? = nil
+    @State private var selectedRSOsCompleted: Bool? = nil
+    
+    var filteredRobots: [Robot] {
+        availableRobots.filter { robot in
+            let matchesHealth = selectedHealth == nil || robot.health == selectedHealth
+            let matchesVersion = selectedVersion == nil || robot.version == selectedVersion
+            let matchesSearchText = searchQuery.isEmpty || robot.serialNumber.lowercased().contains(searchQuery.lowercased())
+            
+            let isRsosFinished = robot.rsosFinished ?? false
+            let matchesRSOS = selectedRSOsCompleted == nil || isRsosFinished == selectedRSOsCompleted
+            
+            return matchesHealth && matchesVersion && matchesSearchText && matchesRSOS
+        }
+    }
+    
     var newRobots: [Robot] {
         availableRobots.filter { $0.health == .new }
     }
@@ -29,88 +48,102 @@ struct SwapRobotView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.appBackgroundColor.ignoresSafeArea()
             
-                Form {
-                    Text("\(position.rawValue) Swap")
-                        .font(.headline)
-                        .foregroundStyle(Color.offWhite)
-                        .listRowBackground(Color.deepBlue)
+            VStack {
                     
-                    Section("Reason for swap"){
-                        TextEditor(text: $swapNotes)
-                            .foregroundStyle(Color.offWhite)
+                TextField("Enter Reason Here", text: $swapNotes)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+                Section {
+                    HStack{
+                        TextField("Search by Serial Number", text: $searchQuery)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                        
+                        Button {
+                            if !showScanner {
+                                showScanner = true
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "qrcode.viewfinder")
+                                    .foregroundStyle(Color.neonGreen)
+                            }
+                        }
                     }
-                    .foregroundStyle(Color.neonGreen)
-                    .listRowBackground(Color.deepBlue)
+                    .padding()
                     
-                    if !newRobots.isEmpty {
-                        Section("New Robots"){
-                            ForEach(newRobots) { robot in
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(robot.serialNumber)
-                                            .foregroundStyle(Color.offWhite)
-                                            .font(.headline)
-                                        Text("G\(robot.version.rawValue)")
-                                            .foregroundStyle(Color.offWhite)
-                                            .font(.subheadline)
-                                            .opacity(0.4)
-                                    }
-                                    Spacer()
-                                    Button("Select") {
-                                        if swapNotes.isEmpty {
-                                            showAlert = true
-                                        } else{
-                                            Task {
-                                                try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: site, notes: swapNotes)
-                                                selectedRobot = robot.serialNumber
-                                                isPresented = false
-                                            }
-                                        }
+                    Section {
+                        HStack() {
+                            Picker("", selection: $selectedHealth){
+                                Text("Health").tag(RobotHealth?.none)
+                                ForEach(RobotHealth.allCases, id: \.self){ health in
+                                    if health != .damaged {
+                                        Text(health.rawValue).tag(RobotHealth?.some(health))
                                     }
                                 }
                             }
-                        }
-                        .foregroundStyle(Color.neonGreen)
-                        .listRowBackground(Color.deepBlue)
-                    }
-                    
-                    if !refurbishedRobots.isEmpty {
-                        Section("Refurbished Robots"){
-                            ForEach(refurbishedRobots) { robot in
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(robot.serialNumber)
-                                            .foregroundStyle(Color.offWhite)
-                                            .font(.headline)
-                                        Text("G\(robot.version.rawValue)")
-                                            .foregroundStyle(Color.offWhite)
-                                            .font(.subheadline)
-                                            .opacity(0.4)
-                                    }
-                                    Spacer()
-                                    Button("Select") {
-                                        if swapNotes.isEmpty {
-                                            showAlert = true
-                                        } else {
-                                            Task {
-                                                try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: site, notes: swapNotes)
-                                                selectedRobot = robot.serialNumber
-                                                await loadAvailableRobots()
-                                                isPresented = false
-                                            }
-                                        }
-                                    }
+                            .pickerStyle(MenuPickerStyle())
+                            
+                            Picker("", selection: $selectedVersion){
+                                Text("Version").tag(RobotVersion?.none)
+                                ForEach(RobotVersion.allCases, id: \.self){ version in
+                                    Text(version.rawValue).tag(RobotVersion?.some(version))
+                                    
                                 }
                             }
+                            .pickerStyle(MenuPickerStyle())
+                            
+                            Picker("Select RSOs", selection: $selectedRSOsCompleted) {
+                                // If RSOs, should show all robots
+                                Text("RSOs").tag(Bool?.none)
+                                Text("Yes").tag(Bool?.some(true))
+                                Text("No").tag(Bool?.some(false))
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            
+                            Text("Total: \(filteredRobots.count)")
                         }
-                        .foregroundStyle(Color.neonGreen)
-                        .listRowBackground(Color.deepBlue)
                     }
                 }
+                
+                
+                List {
+                    ForEach(filteredRobots) { robot in
+                        
+                        if robot.health != .damaged {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(robot.serialNumber)
+                                        .foregroundStyle(Color.offWhite)
+                                        .font(.headline)
+                                    Text(robot.health.rawValue)
+                                        .foregroundStyle(Color.offWhite)
+                                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                                    Text("G\(robot.version.rawValue)")
+                                        .foregroundStyle(Color.offWhite)
+                                        .opacity(0.4)
+                                    
+                                }
+                                Spacer()
+                                Button("Select") {
+                                    if swapNotes.isEmpty {
+                                        showAlert = true
+                                    } else{
+                                        Task {
+                                            try await viewModel.swapRobot(in: cart, for: position, with: robot.serialNumber, from: site, notes: swapNotes)
+                                            selectedRobot = robot.serialNumber
+                                            isPresented = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .listRowBackground(Color.deepBlue)
+                }
             }
+            .navigationTitle("Select \(position.rawValue)")
             .scrollContentBackground(.hidden)
             .background(Color.appBackgroundColor.ignoresSafeArea())
             .task {
@@ -130,10 +163,13 @@ struct SwapRobotView: View {
             }
         }
         .padding()
+        .sheet(isPresented: $showScanner) {
+            QRScannerView(scannedSN: $searchQuery)
+        }
     }
     
     private func loadAvailableRobots() async {
-        availableRobots = await viewModel.getAvailableRobots(for: position, currentRobotSerial: selectedRobot)
+        availableRobots = viewModel.getAvailableRobots(for: position, currentRobotSerial: selectedRobot)
         print("Loaded robots for position: \(position), available robots: \(availableRobots)")
     }
 }

@@ -26,7 +26,7 @@ final class AuthenticationManager {
     
     static let shared = AuthenticationManager()
     private init() { }
-
+    
     
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
@@ -37,8 +37,8 @@ final class AuthenticationManager {
     }
     
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
-            let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
-            return AuthDataResultModel(user: authDataResult.user)
+        let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
+        return AuthDataResultModel(user: authDataResult.user)
     }
     
     //Sign in user function
@@ -64,6 +64,14 @@ final class AuthenticationManager {
     
     func getCurrentUserEmail() -> String? {
         return Auth.auth().currentUser?.email
+    }
+    
+    //delete User
+    func deleteCurrentUser() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw URLError(.badServerResponse)
+        }
+        try await user.delete()
     }
     
 }
