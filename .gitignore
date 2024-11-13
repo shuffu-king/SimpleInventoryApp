@@ -336,3 +336,6 @@ fabric.properties
 # End of https://www.gitignore.io/api/xcode,swift,android,swiftpm,firebase,cocoapods,androidstudio,visualstudiocode,swiftpackagemanager
 GoogleService-Info.plist
 /archive
+
+#IPABuilds
+/IPABuilds
