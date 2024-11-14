@@ -54,7 +54,6 @@ This is inventory management application built with SwiftUI and Firebase. Users 
   - `SiteDetailView`: Displays details of a selected site, including its items and quantities.
   - `SiteStockView`: Allows users to push or pull stock for items at a site.
   - `StockUpdateView`: Provides UI for selecting an item and adjusting its quantity.
-  - `AuthenticationView`: Manages user authentication.
     
 ### Managers
   - `UserManager`: Handles user authentication and management.
@@ -71,4 +70,4 @@ This is inventory management application built with SwiftUI and Firebase. Users 
   - `Settings`: Contains the SettingsView and view model which manages user profile settings.
   - `Profile`: Contains the ProfileView which displays user profile information.
   - `RootView`: The root view of the project
-  - `Authentication`: Contains the authenticationView
+  - `Authentication`: Contains the authenticationView which manages user authentication. 
